@@ -68,7 +68,11 @@ export function ListadoProyectos01({
   porPagina,
 
   baseHref = "/proyectos",
+
+  locale = "es",
 }: ListadoProyectos01Props) {
+
+  const esEspanol = locale !== "en";
 
   /* =======================================================
      PROYECTOS DISPONIBLES
@@ -331,7 +335,7 @@ export function ListadoProyectos01({
               className={
                 styles.viewSwitch
               }
-              aria-label="Cambiar vista de proyectos"
+              aria-label={esEspanol ? "Cambiar vista de proyectos" : "Change projects view"}
             >
 
               {/* FILAS */}
@@ -350,12 +354,12 @@ export function ListadoProyectos01({
                       "filas",
                     )
                 }
-                aria-label="Ver proyectos en filas"
+                aria-label={esEspanol ? "Ver proyectos en filas" : "View projects in rows"}
                 aria-pressed={
                   vista ===
                   "filas"
                 }
-                title="Vista en filas"
+                title={esEspanol ? "Vista en filas" : "Rows view"}
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -396,12 +400,12 @@ export function ListadoProyectos01({
                       "tarjetas",
                     )
                 }
-                aria-label="Ver proyectos en tarjetas"
+                aria-label={esEspanol ? "Ver proyectos en tarjetas" : "View projects as cards"}
                 aria-pressed={
                   vista ===
                   "tarjetas"
                 }
-                title="Vista en tarjetas"
+                title={esEspanol ? "Vista en tarjetas" : "Cards view"}
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -490,7 +494,7 @@ export function ListadoProyectos01({
                 className={
                   styles.card
                 }
-                aria-label={`Ver proyecto ${proyecto.nombre}`}
+                aria-label={`${esEspanol ? "Ver proyecto" : "View project"} ${proyecto.nombre}`}
               >
 
                 {/* =========================================
@@ -572,7 +576,7 @@ export function ListadoProyectos01({
                       styles.link
                     }
                   >
-                    Ver proyecto
+                    {esEspanol ? "Ver proyecto" : "View project"}
 
                     <span
                       aria-hidden="true"
@@ -606,7 +610,7 @@ export function ListadoProyectos01({
               className={
                 styles.dots
               }
-              aria-label="Página de proyectos"
+              aria-label={esEspanol ? "Página de proyectos" : "Projects page"}
             >
               {Array.from(
                 {
@@ -634,7 +638,7 @@ export function ListadoProyectos01({
                           index,
                         )
                     }
-                    aria-label={`Ver grupo ${index + 1}`}
+                    aria-label={`${esEspanol ? "Ver grupo" : "View group"} ${index + 1}`}
                     aria-current={
                       index ===
                       pagina
@@ -663,7 +667,7 @@ export function ListadoProyectos01({
                       -1,
                     )
                 }
-                aria-label="Proyectos anteriores"
+                aria-label={esEspanol ? "Proyectos anteriores" : "Previous projects"}
               >
                 <ArrowLeft
                   size={18}
@@ -682,7 +686,7 @@ export function ListadoProyectos01({
                       1,
                     )
                 }
-                aria-label="Proyectos siguientes"
+                aria-label={esEspanol ? "Proyectos siguientes" : "Next projects"}
               >
                 <ArrowRight
                   size={18}

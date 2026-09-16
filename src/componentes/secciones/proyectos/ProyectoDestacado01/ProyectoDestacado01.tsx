@@ -88,13 +88,13 @@ function IconoReproducir() {
   );
 }
 
-function CtaVisual() {
+function CtaVisual({ esEspanol }: { esEspanol: boolean }) {
   return (
     <span
       className={`${botonStyles.base} ${botonStyles.principal} ${styles.ctaVisual}`}
       aria-hidden="true"
     >
-      <span className={botonStyles.texto}>Ver proyecto</span>
+      <span className={botonStyles.texto}>{esEspanol ? "Ver proyecto" : "View project"}</span>
       <span className={botonStyles.iconoInterno}>
         <FlechaDerecha />
       </span>
@@ -116,7 +116,8 @@ function encontrarTouch(
 }
 
 export function ProyectoDestacado01(props: ProyectoDestacado01Props) {
-  const { id = "proyecto-destacado", baseHref = "/proyectos" } = props;
+  const { id = "proyecto-destacado", baseHref = "/proyectos", locale = "es" } = props;
+  const esEspanol = locale !== "en";
 
   const varios = esProyectoRotativo(props);
   const lista = varios ? props.proyectos : [props.proyecto];
@@ -453,7 +454,7 @@ export function ProyectoDestacado01(props: ProyectoDestacado01Props) {
             <Link
               href={href}
               className={styles.cardLink}
-              aria-label={`Ver proyecto ${proyecto.nombre}`}
+              aria-label={`${esEspanol ? "Ver proyecto" : "View project"} ${proyecto.nombre}`}
               draggable={false}
             />
           )}
@@ -488,7 +489,7 @@ export function ProyectoDestacado01(props: ProyectoDestacado01Props) {
 
             {proyecto.funciones.length > 0 && (
               <div className={styles.features}>
-                <p className={styles.featuresTitle}>Funciones principales</p>
+                <p className={styles.featuresTitle}>{esEspanol ? "Funciones principales" : "Key features"}</p>
                 <ul>
                   {proyecto.funciones.map((funcion) => (
                     <li key={funcion}>{funcion}</li>
@@ -499,7 +500,7 @@ export function ProyectoDestacado01(props: ProyectoDestacado01Props) {
 
             {varios && (
               <div className={styles.cta}>
-                <CtaVisual />
+                <CtaVisual esEspanol={esEspanol} />
               </div>
             )}
           </div>
@@ -514,7 +515,7 @@ export function ProyectoDestacado01(props: ProyectoDestacado01Props) {
 
       {varios && total > 1 && (
         <div className={styles.controls}>
-          <div className={styles.dots} role="group" aria-label="Seleccionar proyecto">
+          <div className={styles.dots} role="group" aria-label={esEspanol ? "Seleccionar proyecto" : "Select project"}>
             {lista.map((item, index) => (
               <button
                 key={item.slug}
@@ -523,19 +524,19 @@ export function ProyectoDestacado01(props: ProyectoDestacado01Props) {
                   index === indice ? styles.dotActive : ""
                 }`}
                 onClick={() => seleccionar(index)}
-                aria-label={`Mostrar ${item.nombre}`}
+                aria-label={`${esEspanol ? "Mostrar" : "Show"} ${item.nombre}`}
                 aria-current={index === indice ? "true" : undefined}
                 disabled={animando}
               />
             ))}
           </div>
 
-          <div className={styles.arrows} aria-label="Controles del carrusel">
+          <div className={styles.arrows} aria-label={esEspanol ? "Controles del carrusel" : "Carousel controls"}>
             <button
               type="button"
               className={styles.arrow}
               onClick={() => cambiar(-1)}
-              aria-label="Proyecto anterior"
+              aria-label={esEspanol ? "Proyecto anterior" : "Previous project"}
               disabled={animando}
             >
               <FlechaIzquierda />
@@ -547,7 +548,11 @@ export function ProyectoDestacado01(props: ProyectoDestacado01Props) {
                 className={styles.arrow}
                 onClick={() => setPausaManual((actual) => !actual)}
                 aria-pressed={pausaManual}
-                aria-label={pausaManual ? "Reanudar proyectos" : "Pausar proyectos"}
+                aria-label={
+                  pausaManual
+                    ? esEspanol ? "Reanudar proyectos" : "Resume projects"
+                    : esEspanol ? "Pausar proyectos" : "Pause projects"
+                }
                 disabled={animando}
               >
                 {pausaManual ? <IconoReproducir /> : <IconoPausa />}
@@ -558,7 +563,7 @@ export function ProyectoDestacado01(props: ProyectoDestacado01Props) {
               type="button"
               className={styles.arrow}
               onClick={() => cambiar(1)}
-              aria-label="Proyecto siguiente"
+              aria-label={esEspanol ? "Proyecto siguiente" : "Next project"}
               disabled={animando}
             >
               <FlechaDerecha />

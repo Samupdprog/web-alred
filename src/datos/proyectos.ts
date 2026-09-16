@@ -1,3 +1,8 @@
+import {
+  proyectosEn,
+} from "./proyectos-en";
+
+
 export type Proyecto = {
   slug: string;
 
@@ -226,23 +231,64 @@ export const proyectos: Proyecto[] = [
    HELPERS
    ========================================================= */
 
+function localizarProyecto(
+  proyecto: Proyecto,
+  locale: string,
+): Proyecto {
+  if (locale !== "en") return proyecto;
+
+  const copy = proyectosEn[proyecto.slug];
+  if (!copy) return proyecto;
+
+  return {
+    ...proyecto,
+    heroTitulo: copy.heroTitulo,
+    heroDescripcion: copy.heroDescripcion,
+    categoria: copy.categoria,
+    descripcion: copy.descripcion,
+    imagenAlt: copy.imagenAlt,
+    funciones: copy.funciones,
+  };
+}
+
+
+export function obtenerProyectosLocalizados(
+  locale: string,
+) {
+  return proyectos.map(
+    (proyecto) =>
+      localizarProyecto(proyecto, locale),
+  );
+}
+
+
 export function obtenerProyecto(
   slug: string,
+  locale: string = "es",
 ) {
-  return proyectos.find(
-    (proyecto) =>
-      proyecto.slug === slug,
-  );
+  const proyecto =
+    proyectos.find(
+      (proyecto) =>
+        proyecto.slug === slug,
+    );
+
+  return proyecto && localizarProyecto(proyecto, locale);
 }
 
 
 export function obtenerOtrosProyectos(
   slug: string,
+  locale: string = "es",
 ) {
-  return proyectos.filter(
-    (proyecto) =>
-      proyecto.slug !== slug,
-  );
+  return proyectos
+    .filter(
+      (proyecto) =>
+        proyecto.slug !== slug,
+    )
+    .map(
+      (proyecto) =>
+        localizarProyecto(proyecto, locale),
+    );
 }
 
 

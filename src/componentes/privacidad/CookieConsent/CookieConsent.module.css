@@ -3,8 +3,8 @@
   z-index: 1000;
   left: 16px;
   bottom: calc(16px + env(safe-area-inset-bottom));
-  width: min(390px, calc(100vw - 32px));
-  padding: 18px;
+  width: min(370px, calc(100vw - 32px));
+  padding: 14px;
   color: var(--color-ink);
   background: var(--color-surface-strong);
   border: 1px solid var(--ui-border-soft);
@@ -15,16 +15,27 @@
 
 .copy {
   margin: 0;
-  font-size: .88rem;
-  line-height: 1.45;
+  font-size: .86rem;
+  line-height: 1.4;
+}
+
+.copySecondary {
+  margin: 6px 0 0;
+  color: var(--color-muted);
+  font-size: .76rem;
+  line-height: 1.35;
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 11px;
+  gap: 8px;
+  margin-top: 9px;
   font-size: .78rem;
+}
+
+.links span {
+  color: var(--color-muted);
 }
 
 .links a,
@@ -46,7 +57,7 @@
 .preferenceActions {
   display: flex;
   gap: 8px;
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 .actions button,
@@ -176,7 +187,7 @@
     left: 10px;
     bottom: calc(10px + env(safe-area-inset-bottom));
     width: calc(100vw - 20px);
-    padding: 15px;
+    padding: 14px;
   }
 
   .actions button {

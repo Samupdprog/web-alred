@@ -127,7 +127,10 @@ function loadScript(src: string, marker: string, onLoad: () => void) {
 
 function loadGoogleAnalytics(id: string, onReady: () => void) {
   window.dataLayer = window.dataLayer ?? [];
-  window.gtag = window.gtag ?? ((...args: unknown[]) => window.dataLayer?.push(args));
+  window.gtag = window.gtag ?? function gtag() {
+    // eslint-disable-next-line prefer-rest-params -- must match Google's official snippet exactly
+    window.dataLayer?.push(arguments);
+  };
   window.gtag("js", new Date());
   window.gtag("consent", "update", {
     analytics_storage: "granted",
@@ -144,6 +147,19 @@ function loadClarity(id: string, onReady: () => void) {
     clarity.q.push(args);
   });
   loadScript(`https://www.clarity.ms/tag/${encodeURIComponent(id)}`, "microsoft-clarity", onReady);
+}
+
+const ALLOWED_UTM_PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"];
+
+function buildPageLocation(pathname: string) {
+  const search = new URLSearchParams(window.location.search);
+  const kept = new URLSearchParams();
+  for (const key of ALLOWED_UTM_PARAMS) {
+    const value = search.get(key);
+    if (value) kept.set(key, value);
+  }
+  const query = kept.toString();
+  return `${window.location.origin}${pathname}${query ? `?${query}` : ""}`;
 }
 
 export function useConsent() {
@@ -163,7 +179,7 @@ export function ConsentProvider({ locale, children }: { locale: "es" | "en"; chi
   const [analyticsChoice, setAnalyticsChoice] = useState(() =>
     typeof window === "undefined" ? false : readConsent()?.analytics ?? false,
   );
-  const analyticsReady = useRef(false);
+  const gaReady = useRef(false);
   const lastPagePath = useRef<string | null>(null);
 
   useEffect(() => {
@@ -188,46 +204,44 @@ export function ConsentProvider({ locale, children }: { locale: "es" | "en"; chi
   useEffect(() => {
     if (!consent?.analytics) {
       updateClarityConsent(false);
-      analyticsReady.current = false;
+      gaReady.current = false;
       return;
     }
 
     const gaId = process.env.NEXT_PUBLIC_GA_ID;
     const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
-    let ready = 0;
-    const markReady = () => {
-      ready += 1;
-      if (ready >= Number(Boolean(gaId)) + Number(Boolean(clarityId))) {
-        analyticsReady.current = true;
-        window.dispatchEvent(new Event("alred:analytics-ready"));
-      }
-    };
 
-    if (gaId) loadGoogleAnalytics(gaId, markReady);
+    if (gaId) loadGoogleAnalytics(gaId, () => {
+      gaReady.current = true;
+      window.dispatchEvent(new Event("alred:ga-ready"));
+    });
     if (clarityId) loadClarity(clarityId, () => {
       updateClarityConsent(true);
-      markReady();
     });
   }, [consent?.analytics]);
 
   useEffect(() => {
     const sendPageview = () => {
-      if (!analyticsReady.current || !consent?.analytics || !window.gtag || lastPagePath.current === pathname) return;
+      if (!gaReady.current || !consent?.analytics || !window.gtag || lastPagePath.current === pathname) return;
       lastPagePath.current = pathname;
-      window.gtag("event", "page_view", { page_path: pathname });
+      window.gtag("event", "page_view", {
+        page_title: document.title,
+        page_location: buildPageLocation(pathname),
+        page_path: pathname,
+      });
     };
     sendPageview();
-    window.addEventListener("alred:analytics-ready", sendPageview);
-    return () => window.removeEventListener("alred:analytics-ready", sendPageview);
+    window.addEventListener("alred:ga-ready", sendPageview);
+    return () => window.removeEventListener("alred:ga-ready", sendPageview);
   }, [consent?.analytics, pathname]);
 
   const save = (analytics: boolean) => {
-    const next = writeConsent(analytics);
+    writeConsent(analytics);
     setAnalyticsChoice(analytics);
     setPreferencesOpen(false);
     if (!analytics) {
       lastPagePath.current = null;
-      analyticsReady.current = false;
+      gaReady.current = false;
       window.gtag?.("consent", "update", {
         analytics_storage: "denied",
         ad_storage: "denied",
@@ -253,15 +267,23 @@ export function ConsentProvider({ locale, children }: { locale: "es" | "en"; chi
           {!preferencesOpen ? (
             <>
               <p className={styles.copy}>
-                {locale === "es" ? "Usamos analítica para entender cómo se utiliza Alred y mejorar la web." : "We use analytics to understand how Alred is used and improve the website."}
+                {locale === "es"
+                  ? "Utilizamos analítica para entender cómo se usa Alred y seguir mejorando la experiencia y el funcionamiento de la web."
+                  : "We use analytics to understand how Alred is used and keep improving the experience and performance of the website."}
+              </p>
+              <p className={styles.copySecondary}>
+                {locale === "es"
+                  ? "Puedes cambiar tus preferencias cuando quieras."
+                  : "You can change your preferences at any time."}
               </p>
               <div className={styles.links}>
                 <a href={`/${locale}/cookies`}>{locale === "es" ? "Más información" : "More information"}</a>
-                <button type="button" className={styles.textButton} onClick={openPreferences}>{locale === "es" ? "Configurar" : "Configure"}</button>
+                <span aria-hidden="true">·</span>
+                <button type="button" className={styles.textButton} onClick={() => save(false)}>{locale === "es" ? "Rechazar" : "Reject"}</button>
               </div>
               <div className={styles.actions}>
                 <button type="button" className={styles.accept} onClick={() => save(true)}>{locale === "es" ? "Aceptar" : "Accept"}</button>
-                <button type="button" className={styles.reject} onClick={() => save(false)}>{locale === "es" ? "Rechazar" : "Reject"}</button>
+                <button type="button" className={styles.reject} onClick={openPreferences}>{locale === "es" ? "Configurar" : "Configure"}</button>
               </div>
             </>
           ) : (
@@ -270,8 +292,28 @@ export function ConsentProvider({ locale, children }: { locale: "es" | "en"; chi
                 <h2 id="alred-consent-title">{locale === "es" ? "Preferencias" : "Preferences"}</h2>
                 <button type="button" className={styles.close} onClick={() => setPreferencesOpen(false)} aria-label={locale === "es" ? "Cerrar preferencias" : "Close preferences"}>×</button>
               </div>
-              <div className={styles.preferenceRow}><div><strong>{locale === "es" ? "Necesarias" : "Necessary"}</strong><span>{locale === "es" ? "Siempre activas" : "Always active"}</span></div><span className={styles.alwaysOn}>{locale === "es" ? "Activas" : "Active"}</span></div>
-              <div className={styles.preferenceRow}><div><strong>{locale === "es" ? "Analítica" : "Analytics"}</strong><span>Google Analytics y Microsoft Clarity</span></div><button type="button" className={`${styles.toggle} ${analyticsChoice ? styles.toggleOn : ""}`} role="switch" aria-checked={analyticsChoice} onClick={() => setAnalyticsChoice(value => !value)}><span /></button></div>
+              <div className={styles.preferenceRow}>
+                <div>
+                  <strong>{locale === "es" ? "Necesarias" : "Necessary"}</strong>
+                  <span>
+                    {locale === "es"
+                      ? "Permiten el funcionamiento básico de la web y recordar tus preferencias."
+                      : "They enable the website's basic operation and remember your preferences."}
+                  </span>
+                </div>
+                <span className={styles.alwaysOn}>{locale === "es" ? "Siempre activas" : "Always active"}</span>
+              </div>
+              <div className={styles.preferenceRow}>
+                <div>
+                  <strong>{locale === "es" ? "Analítica" : "Analytics"}</strong>
+                  <span>
+                    {locale === "es"
+                      ? "Nos ayuda a conocer de forma agregada cómo se utiliza la web, detectar problemas y seguir mejorando la experiencia."
+                      : "It helps us see in aggregate how the website is used, detect issues and keep improving the experience."}
+                  </span>
+                </div>
+                <button type="button" className={`${styles.toggle} ${analyticsChoice ? styles.toggleOn : ""}`} role="switch" aria-checked={analyticsChoice} onClick={() => setAnalyticsChoice(value => !value)}><span /></button>
+              </div>
               <div className={styles.preferenceActions}>
                 <button type="button" className={styles.accept} onClick={() => save(analyticsChoice)}>{locale === "es" ? "Guardar preferencias" : "Save preferences"}</button>
                 <button type="button" className={styles.reject} onClick={() => save(false)}>{locale === "es" ? "Rechazar analítica" : "Reject analytics"}</button>

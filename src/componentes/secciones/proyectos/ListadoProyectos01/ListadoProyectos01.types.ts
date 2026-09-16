@@ -37,4 +37,11 @@ export type ListadoProyectos01Props = {
    * /es/proyectos
    */
   baseHref?: string;
+
+  /**
+   * Idioma de los textos de la interfaz (controles, aria-labels).
+   *
+   * Por defecto: "es".
+   */
+  locale?: string;
 };

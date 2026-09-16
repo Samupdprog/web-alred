@@ -14,6 +14,7 @@ import {
 } from "@/componentes/secciones";
 
 import {
+  obtenerOtrosProyectos,
   obtenerProyecto,
   proyectos,
 } from "@/datos/proyectos";
@@ -43,12 +44,14 @@ export async function generateMetadata({
   params,
 }: ProyectoPageProps): Promise<Metadata> {
   const {
+    locale,
     slug,
   } = await params;
 
   const proyecto =
     obtenerProyecto(
       slug,
+      locale,
     );
 
   if (
@@ -57,9 +60,14 @@ export async function generateMetadata({
     return {};
   }
 
+  const esEspanol =
+    locale !== "en";
+
   return {
     title:
-      `${proyecto.nombre} | Proyecto de Alred`,
+      esEspanol
+        ? `${proyecto.nombre} | Proyecto de Alred`
+        : `${proyecto.nombre} | Alred project`,
 
     description:
       proyecto.descripcion,
@@ -75,9 +83,13 @@ export default async function ProyectoPage({
     slug,
   } = await params;
 
+  const esEspanol =
+    locale !== "en";
+
   const proyecto =
     obtenerProyecto(
       slug,
+      locale,
     );
 
   if (
@@ -85,6 +97,12 @@ export default async function ProyectoPage({
   ) {
     notFound();
   }
+
+  const otrosProyectos =
+    obtenerOtrosProyectos(
+      slug,
+      locale,
+    );
 
   return (
     <main
@@ -105,7 +123,9 @@ export default async function ProyectoPage({
 
         cta={{
           texto:
-            "Hablemos de tu proyecto",
+            esEspanol
+              ? "Hablemos de tu proyecto"
+              : "Let's talk about your project",
 
           href:
             `/${locale}/contacto`,
@@ -136,6 +156,10 @@ export default async function ProyectoPage({
         proyecto={
           proyecto
         }
+
+        locale={
+          locale
+        }
       />
 
 
@@ -144,12 +168,20 @@ export default async function ProyectoPage({
          =================================================== */}
 
       <ListadoProyectos01
-        titulo="Otros proyectos"
+        titulo={
+          esEspanol
+            ? "Otros proyectos"
+            : "Other projects"
+        }
 
-        descripcion="Explora otras soluciones desarrolladas alrededor de procesos y necesidades diferentes."
+        descripcion={
+          esEspanol
+            ? "Explora otras soluciones desarrolladas alrededor de procesos y necesidades diferentes."
+            : "Explore other solutions built around different processes and needs."
+        }
 
         proyectos={
-          proyectos
+          otrosProyectos
         }
 
         excluir={
@@ -161,6 +193,10 @@ export default async function ProyectoPage({
         }
 
         baseHref={`/${locale}/proyectos`}
+
+        locale={
+          locale
+        }
       />
 
 
@@ -169,13 +205,23 @@ export default async function ProyectoPage({
          =================================================== */}
 
       <CTAFinal01
-        titulo="Cuéntanos lo que necesitas."
+        titulo={
+          esEspanol
+            ? "Cuéntanos lo que necesitas."
+            : "Tell us what you need."
+        }
 
-        descripcion="Te ayudamos a definir la solución y puedes pedir tu presupuesto gratis, sin compromiso."
+        descripcion={
+          esEspanol
+            ? "Te ayudamos a definir la solución y puedes pedir tu presupuesto gratis, sin compromiso."
+            : "We'll help you define the solution and you can request your free, no-obligation quote."
+        }
 
         cta={{
           texto:
-            "Pedir presupuesto gratis",
+            esEspanol
+              ? "Pedir presupuesto gratis"
+              : "Request a free quote",
 
           href:
             `/${locale}/contacto`,
@@ -183,7 +229,9 @@ export default async function ProyectoPage({
 
         ctaSecundario={{
           texto:
-            "Ver todos los proyectos",
+            esEspanol
+              ? "Ver todos los proyectos"
+              : "View all projects",
 
           href:
             `/${locale}/proyectos`,
@@ -193,7 +241,11 @@ export default async function ProyectoPage({
 
         fondoMobile="/images/Decorativas/difference-alred-visual (7).png"
 
-        fondoAlt="Textura abstracta de Alred"
+        fondoAlt={
+          esEspanol
+            ? "Textura abstracta de Alred"
+            : "Abstract Alred texture"
+        }
 
         oscurecerFondo={
           0.04
