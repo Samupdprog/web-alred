@@ -1,0 +1,34 @@
+.notice {
+  max-width:
+    720px;
+
+  color:
+    var(--color-muted);
+
+  font-size:
+    0.78rem;
+
+  line-height:
+    1.55;
+}
+
+
+.notice p {
+  margin:
+    0;
+}
+
+
+.notice a {
+  color:
+    var(--color-ink);
+
+  text-decoration:
+    underline;
+
+  text-decoration-thickness:
+    1px;
+
+  text-underline-offset:
+    3px;
+}

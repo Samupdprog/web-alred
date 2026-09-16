@@ -1,0 +1,142 @@
+HERO02 — GUÍA PARA page.tsx
+=================================
+
+OBJETIVO
+--------
+Hero alternativo para Alred basado en una única imagen de fondo preparada
+para dejar una zona limpia donde se coloca el texto.
+
+No incluye eyebrow, badge, pill ni numeración decorativa.
+Usa los componentes globales Boton y Enlace.
+Consume los tokens globales de colores, radios, espaciado y movimiento.
+
+IMPORTACIÓN
+-----------
+Si src/componentes/secciones/index.ts ya exporta "./hero":
+
+import { Hero02 } from "@/componentes/secciones";
+
+EJEMPLO
+-------
+<Hero02
+  titulo="Soluciones digitales a medida para que tu empresa trabaje mejor"
+
+  descripcion="Transformamos la forma en la que trabajas con herramientas digitales diseñadas alrededor de tu negocio, no al revés."
+
+  cta={{
+    texto: "Cuéntanos tu proyecto",
+    href: "/contacto",
+  }}
+
+  ctaSecundario={{
+    texto: "Ver cómo trabajamos",
+    href: "/nosotros",
+  }}
+
+  fondoDesktop="/images/Hero/hero-alred-desktop.jpg"
+  fondoMobile="/images/Hero/hero-alred-mobile.jpg"
+
+  fondoX={50}
+  fondoY={50}
+
+  fondoXMobile={50}
+  fondoYMobile={50}
+/>
+
+PARÁMETROS
+----------
+
+titulo
+  string obligatorio.
+  H1 principal del Hero.
+
+descripcion
+  string obligatorio.
+  Texto de apoyo debajo del título.
+
+cta
+  obligatorio.
+  { texto: string; href: string }
+  Usa Boton variante="principal".
+
+ctaSecundario
+  opcional.
+  { texto: string; href: string }
+  Usa Enlace variante="subrayado".
+  Si no se pasa, solo aparece el botón principal.
+
+fondoDesktop
+  string obligatorio.
+  Imagen principal para desktop.
+  Se escribe sin /public.
+
+  Correcto:
+  /images/Hero/hero-alred-desktop.jpg
+
+fondoMobile
+  string opcional.
+  Imagen específica para móvil.
+  Si no se pasa, se reutiliza fondoDesktop.
+
+fondoAlt
+  string opcional.
+  El fondo es decorativo por defecto y normalmente puede dejarse vacío.
+
+fondoX
+  number opcional. Default: 50.
+  Posición horizontal desktop.
+
+  0   = izquierda
+  50  = centro
+  100 = derecha
+
+fondoY
+  number opcional. Default: 50.
+  Posición vertical desktop.
+
+  0   = arriba
+  50  = centro
+  100 = abajo
+
+fondoXMobile
+  number opcional.
+  Posición horizontal solo en móvil.
+  Si no se indica, hereda fondoX.
+
+fondoYMobile
+  number opcional.
+  Posición vertical solo en móvil.
+  Si no se indica, hereda fondoY.
+
+ESTRUCTURA
+----------
+Desktop:
+- fondo completo
+- texto a la izquierda
+- CTA principal + enlace secundario
+- arte de la imagen concentrado a la derecha
+
+Móvil:
+- fondo mobile independiente
+- texto arriba a la izquierda
+- acciones debajo
+- arte preferentemente en lateral o zona inferior
+
+RECOMENDACIÓN DE IMÁGENES
+-------------------------
+Desktop:
+1920x1000 aprox. o relación similar.
+Deja la zona izquierda limpia para el contenido.
+
+Mobile:
+900x1200 / 1080x1440 aprox.
+Deja la parte superior relativamente limpia para el contenido.
+
+NOTAS
+-----
+- Hero02 es un componente nuevo; no modifica Hero01.
+- No necesita use client.
+- No lleva JavaScript.
+- Desktop y móvil pueden tener imágenes completamente diferentes.
+- X/Y de ambos fondos se controlan desde page.tsx.
+- El componente mantiene la tipografía, botones, radios y espaciados globales de Alred.

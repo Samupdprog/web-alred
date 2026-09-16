@@ -1,0 +1,1820 @@
+.section {
+  width: min(
+    calc(
+      100% -
+      (var(--space-page) * 2)
+    ),
+    var(--content-max)
+  );
+
+  margin-inline: auto;
+}
+
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+
+.sectionHead {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.55fr)
+    minmax(290px, .48fr);
+
+  align-items: start;
+
+  gap:
+    clamp(
+      54px,
+      8vw,
+      132px
+    );
+
+  margin-bottom:
+    clamp(
+      30px,
+      3.3vw,
+      46px
+    );
+}
+
+
+.sectionHead h2 {
+  width:
+    min(
+      100%,
+      920px
+    );
+
+  margin: 0;
+
+  color:
+    var(--color-ink);
+
+  font-size:
+    clamp(
+      3.35rem,
+      4.9vw,
+      5rem
+    );
+
+  line-height:
+    .94;
+
+  letter-spacing:
+    -.061em;
+
+  font-weight:
+    500;
+
+  text-wrap:
+    balance;
+
+  white-space:
+    pre-line;
+}
+
+
+.sectionHead p {
+  max-width:
+    390px;
+
+  margin:
+    9px
+    0
+    0;
+
+  color:
+    var(--color-muted);
+
+  font-size:
+    .95rem;
+
+  line-height:
+    1.5;
+
+  letter-spacing:
+    -.018em;
+}
+
+
+/* =========================================================
+   CARRUSEL
+   ========================================================= */
+
+.carousel {
+  display: grid;
+
+  grid-template-columns:
+    clamp(
+      92px,
+      9.5vw,
+      132px
+    )
+    minmax(0, 1fr)
+    clamp(
+      92px,
+      9.5vw,
+      132px
+    );
+
+  gap:
+    var(--space-page);
+
+  min-height:
+    clamp(
+      470px,
+      34vw,
+      540px
+    );
+
+  outline:
+    none;
+
+  touch-action: pan-y pinch-zoom;
+}
+
+
+.carousel:focus-visible {
+  outline:
+    2px solid
+    var(--color-ink);
+
+  outline-offset:
+    6px;
+
+  border-radius:
+    var(--radius-lg);
+}
+
+
+/* =========================================================
+   TARJETAS
+   ========================================================= */
+
+.card {
+  position:
+    relative;
+
+  min-width:
+    0;
+
+  min-height:
+    clamp(
+      470px,
+      34vw,
+      540px
+    );
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    var(--color-border);
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    var(--color-surface);
+
+  isolation:
+    isolate;
+
+  box-shadow:
+    0
+    12px
+    34px
+    rgba(
+      17,
+      17,
+      17,
+      .035
+    );
+
+
+}
+
+
+.cardSide {
+  cursor:
+    pointer;
+
+  transition:
+    transform
+    var(--motion-base)
+    var(--motion-ease);
+}
+
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.media {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  overflow:
+    hidden;
+
+  background:
+    var(--color-surface);
+}
+
+
+.projectPicture {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  height:
+    100%;
+}
+
+
+.projectImage {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  max-width:
+    none;
+
+  object-fit:
+    cover;
+
+  object-position:
+    var(
+      --project-position-desktop,
+      center
+    );
+
+  transform:
+    scale(1.002);
+
+  transition:
+    transform
+    850ms
+    var(--motion-ease);
+}
+
+
+/* =========================================================
+   SCRIM PRINCIPAL
+   ========================================================= */
+
+.mediaScrim {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    1;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+
+      rgba(
+        0,
+        0,
+        0,
+        0
+      )
+      34%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .06
+      )
+      56%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .17
+      )
+      72%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .62
+      )
+      100%
+    );
+}
+
+
+/* =========================================================
+   TOP
+   ========================================================= */
+
+.cardTop {
+  position:
+    absolute;
+
+  top:
+    clamp(
+      16px,
+      1.45vw,
+      22px
+    );
+
+  left:
+    clamp(
+      16px,
+      1.45vw,
+      22px
+    );
+
+  right:
+    clamp(
+      16px,
+      1.45vw,
+      22px
+    );
+
+  z-index:
+    4;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap:
+    20px;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.logoBadge {
+  width:
+    46px;
+
+  height:
+    46px;
+
+  flex:
+    0
+    0
+    auto;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(
+      17,
+      17,
+      17,
+      .07
+    );
+
+  border-radius:
+    50%;
+
+  background:
+    var(
+      --color-surface-strong
+    );
+
+  box-shadow:
+    0
+    6px
+    20px
+    rgba(
+      17,
+      17,
+      17,
+      .08
+    );
+}
+
+
+.logoImage {
+  width:
+    29px;
+
+  height:
+    29px;
+
+  object-fit:
+    contain;
+}
+
+
+/* =========================================================
+   TEMPORIZADOR
+   ========================================================= */
+
+.projectTimer {
+  width:
+    clamp(
+      112px,
+      11vw,
+      152px
+    );
+
+  height:
+    30px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  padding:
+    0
+    10px;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .15
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        29,
+        29,
+        34,
+        .84
+      ),
+      rgba(
+        17,
+        17,
+        20,
+        .88
+      )
+    );
+
+  box-shadow:
+    inset
+    0
+    1px
+    0
+    rgba(
+      255,
+      255,
+      255,
+      .11
+    ),
+
+    0
+    8px
+    24px
+    rgba(
+      0,
+      0,
+      0,
+      .14
+    );
+
+  backdrop-filter:
+    blur(12px)
+    saturate(1.1);
+
+  -webkit-backdrop-filter:
+    blur(12px)
+    saturate(1.1);
+}
+
+
+.projectTimerTrack {
+  position:
+    relative;
+
+  width:
+    100%;
+
+  height:
+    3px;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .13
+    );
+}
+
+
+.projectTimerValue {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  display:
+    block;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    inherit;
+
+  transform:
+    scaleX(0);
+
+  transform-origin:
+    left center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff 0%,
+      #e8e7f6 20%,
+      #b8d0f0 42%,
+      #c4b2ea 63%,
+      #edc2d1 82%,
+      #ffffff 100%
+    );
+
+  box-shadow:
+    0
+    0
+    10px
+    rgba(
+      189,
+      176,
+      235,
+      .34
+    );
+
+
+}
+
+
+.projectTimerValue i {
+  position:
+    absolute;
+
+  top:
+    -4px;
+
+  bottom:
+    -4px;
+
+  left:
+    -52%;
+
+  width:
+    48%;
+
+  display:
+    block;
+
+  border-radius:
+    inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(
+        255,
+        255,
+        255,
+        .15
+      )
+      15%,
+      rgba(
+        255,
+        255,
+        255,
+        .95
+      )
+      50%,
+      rgba(
+        255,
+        255,
+        255,
+        .18
+      )
+      84%,
+      transparent 100%
+    );
+
+  filter:
+    blur(2px);
+
+  opacity:
+    var(
+      --ui-primary-shine-opacity,
+      .30
+    );
+
+  animation:
+    projectTimerShine
+    var(
+      --ui-primary-shine-speed,
+      7.5s
+    )
+    linear
+    infinite;
+}
+
+
+[data-autoplay="paused"] .projectTimerValue i { animation-play-state: paused; }
+
+/* =========================================================
+   COPY PRINCIPAL
+   ========================================================= */
+
+.cardBottom {
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  bottom:
+    0;
+
+  z-index:
+    4;
+
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  gap:
+    30px;
+
+  padding:
+    clamp(
+      22px,
+      2.25vw,
+      34px
+    );
+}
+
+
+.projectMeta {
+  min-width:
+    0;
+
+  max-width:
+    580px;
+
+  color:
+    white;
+}
+
+
+.projectMeta h3 {
+  margin:
+    0;
+
+  font-size:
+    clamp(
+      1.25rem,
+      1.65vw,
+      1.7rem
+    );
+
+  line-height:
+    1;
+
+  letter-spacing:
+    -.04em;
+
+  font-weight:
+    520;
+}
+
+
+.category {
+  margin:
+    7px
+    0
+    0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      .68
+    );
+
+  font-size:
+    .78rem;
+
+  line-height:
+    1.3;
+
+  letter-spacing:
+    -.01em;
+}
+
+
+.projectDescription {
+  max-width:
+    560px;
+
+  margin:
+    15px
+    0
+    0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      .87
+    );
+
+  font-size:
+    .95rem;
+
+  line-height:
+    1.45;
+
+  letter-spacing:
+    -.018em;
+}
+
+
+.projectCta {
+  flex:
+    0
+    0
+    auto;
+}
+
+
+/* =========================================================
+   TARJETAS LATERALES
+   ========================================================= */
+
+.cardSide .media {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+}
+
+
+.cardSide .projectPicture {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+}
+
+
+.cardSide .projectImage {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  max-width:
+    none;
+
+  object-fit:
+    cover;
+
+  /*
+   * IMPORTANTE:
+   * ocupa TODA la tarjeta lateral.
+   */
+  object-position:
+    center center;
+
+  transform:
+    scale(1.01);
+}
+
+
+/* =========================================================
+   DEGRADADO LATERAL
+   ========================================================= */
+
+.cardSide
+.mediaScrim {
+  background:
+    linear-gradient(
+      180deg,
+
+      rgba(
+        0,
+        0,
+        0,
+        .02
+      )
+      0%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .03
+      )
+      40%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .17
+      )
+      66%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .74
+      )
+      100%
+    );
+}
+
+
+/* =========================================================
+   LOGO LATERAL
+   ========================================================= */
+
+.cardSide
+.cardTop {
+  top:
+    14px;
+
+  left:
+    14px;
+
+  right:
+    14px;
+}
+
+
+.cardSide
+.logoBadge {
+  width:
+    38px;
+
+  height:
+    38px;
+
+  background:
+    var(
+      --color-surface-strong
+    );
+
+  border:
+    1px solid
+    rgba(
+      17,
+      17,
+      17,
+      .07
+    );
+
+  box-shadow:
+    0
+    5px
+    16px
+    rgba(
+      0,
+      0,
+      0,
+      .08
+    );
+}
+
+
+.cardSide
+.logoImage {
+  width:
+    23px;
+
+  height:
+    23px;
+
+  object-fit:
+    contain;
+}
+
+
+/* =========================================================
+   COPY LATERAL
+   ========================================================= */
+
+.cardSide
+.cardBottom {
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  bottom:
+    0;
+
+  padding:
+    18px
+    13px
+    16px;
+}
+
+
+.cardSide
+.projectMeta {
+  max-width:
+    100%;
+}
+
+
+.cardSide
+.projectMeta h3 {
+  margin:
+    0;
+
+  color:
+    #ffffff;
+
+  font-size:
+    .95rem;
+
+  line-height:
+    1.08;
+
+  letter-spacing:
+    -.035em;
+
+  font-weight:
+    520;
+}
+
+
+.cardSide
+.category {
+  max-width:
+    110px;
+
+  margin-top:
+    7px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      .62
+    );
+
+  font-size:
+    .6rem;
+
+  line-height:
+    1.3;
+}
+
+
+.cardSide
+.projectDescription {
+  display:
+    none;
+}
+
+
+/* =========================================================
+   HIT AREA LATERAL
+   ========================================================= */
+
+.sideHit {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    8;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  padding:
+    0;
+
+  border:
+    0;
+
+  background:
+    transparent;
+
+  cursor:
+    pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr
+    auto
+    1fr;
+
+  align-items:
+    center;
+
+  gap:
+    20px;
+
+  min-height:
+    54px;
+
+  margin-top:
+    10px;
+}
+
+
+.footerSpacer {
+  grid-column:
+    1;
+
+  justify-self:
+    start;
+}
+
+
+/* =========================================================
+   PAGINACIÓN
+   ========================================================= */
+
+.pagination {
+  grid-column:
+    2;
+
+  justify-self:
+    center;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+}
+
+
+.dot {
+  width: var(--size-touch-target);
+  height: var(--size-touch-target);
+  touch-action: manipulation;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  padding:
+    0;
+
+  border:
+    0;
+
+  background:
+    transparent;
+
+  cursor:
+    pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
+.dot span {
+  width:
+    5px;
+
+  height:
+    5px;
+
+  display:
+    block;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      17,
+      17,
+      17,
+      .22
+    );
+
+  transition:
+    width
+    var(--motion-base)
+    var(--motion-ease),
+
+    background
+    var(--motion-base)
+    var(--motion-ease),
+
+    transform
+    var(--motion-base)
+    var(--motion-ease);
+}
+
+
+.dotActive span {
+  width:
+    17px;
+
+  border-radius:
+    999px;
+
+  background:
+    var(--color-ink);
+}
+
+
+/* =========================================================
+   FLECHAS
+   ========================================================= */
+
+.controls {
+  grid-column:
+    3;
+
+  justify-self:
+    end;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+}
+
+
+.previousButton {
+  transform:
+    rotate(180deg);
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .cardSide:hover {
+    transform:
+      translateY(-3px);
+  }
+
+
+  .cardSide:hover
+  .projectImage,
+
+  .cardActive:hover
+  .projectImage {
+    transform:
+      scale(1.018);
+  }
+
+
+  .dot:hover
+  span {
+    background:
+      color-mix(
+        in srgb,
+        var(--color-ink)
+        58%,
+        transparent
+      );
+
+    transform:
+      scale(1.18);
+  }
+
+
+  .dotActive:hover
+  span {
+    transform:
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 980px) {
+
+  .sectionHead {
+    grid-template-columns:
+      1fr;
+
+    gap:
+      22px;
+  }
+
+
+  .sectionHead h2 {
+    width:
+      min(
+        100%,
+        780px
+      );
+  }
+
+
+  .sectionHead p {
+    max-width:
+      560px;
+  }
+
+
+  .carousel {
+    grid-template-columns:
+      82px
+      minmax(0, 1fr)
+      82px;
+
+    min-height:
+      460px;
+  }
+
+
+  .card {
+    min-height:
+      460px;
+  }
+
+
+  .projectDescription {
+    max-width:
+      430px;
+  }
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .sectionHead {
+    gap:
+      18px;
+
+    margin-bottom:
+      26px;
+
+    padding-inline:
+      6px;
+  }
+
+
+  .sectionHead h2 {
+    width:
+      100%;
+
+    max-width:
+      11ch;
+
+    font-size:
+      clamp(
+        2.75rem,
+        12vw,
+        4rem
+      );
+
+    line-height:
+      .95;
+  }
+
+
+  .sectionHead p {
+    max-width:
+      32rem;
+
+    font-size:
+      .95rem;
+  }
+
+
+  /* =====================================================
+     CARRUSEL MÓVIL
+     ===================================================== */
+
+  .carousel {
+    display:
+      grid;
+
+    /*
+     * Pequeños trozos del anterior
+     * y siguiente visibles.
+     */
+    grid-template-columns:
+      14px
+      minmax(0, 1fr)
+      14px;
+
+    gap:
+      7px;
+
+    min-height:
+      505px;
+
+    overflow:
+      hidden;
+  }
+
+
+  .card {
+    min-height:
+      505px;
+  }
+
+
+  /* =====================================================
+     IMAGEN MÓVIL
+     ===================================================== */
+
+  .projectImage {
+    object-position:
+      var(
+        --project-position-mobile,
+        center
+      );
+  }
+
+
+  /* =====================================================
+     LATERALES MÓVIL
+     ===================================================== */
+
+  .cardSide {
+    display:
+      block;
+
+    border-radius:
+      var(--radius-md);
+
+    /*
+     * En móvil los laterales funcionan
+     * solo como pista visual.
+     * El swipe es el que cambia.
+     */
+    pointer-events:
+      none;
+  }
+
+
+  .cardSide
+  .cardTop,
+
+  .cardSide
+  .cardBottom,
+
+  .cardSide
+  .sideHit {
+    display:
+      none;
+  }
+
+
+  .cardSide
+  .projectImage {
+    object-position:
+      var(
+        --project-position-mobile,
+        center
+      );
+  }
+
+
+  /* =====================================================
+     ACTIVO
+     ===================================================== */
+
+  .cardActive {
+    width:
+      100%;
+
+    border-radius:
+      var(--radius-lg);
+  }
+
+
+  /* =====================================================
+     TOP
+     ===================================================== */
+
+  .cardTop {
+    top:
+      14px;
+
+    left:
+      14px;
+
+    right:
+      14px;
+  }
+
+
+  /* =====================================================
+     LOGO
+     ===================================================== */
+
+  .logoBadge {
+    width:
+      44px;
+
+    height:
+      44px;
+  }
+
+
+  .logoImage {
+    width:
+      28px;
+
+    height:
+      28px;
+  }
+
+
+  /* =====================================================
+     TIMER
+     ===================================================== */
+
+  .projectTimer {
+    width:
+      108px;
+
+    height:
+      28px;
+
+    padding:
+      0
+      8px;
+  }
+
+
+  .projectTimerTrack {
+    height:
+      3px;
+  }
+
+
+  /* =====================================================
+     COPY
+     ===================================================== */
+
+  .cardBottom {
+    align-items:
+      flex-end;
+
+    gap:
+      18px;
+
+    padding:
+      22px
+      18px
+      20px;
+  }
+
+
+  .projectMeta {
+    max-width:
+      calc(
+        100% -
+        62px
+      );
+  }
+
+
+  .projectMeta h3 {
+    font-size:
+      1.45rem;
+  }
+
+
+  .category {
+    font-size:
+      .74rem;
+  }
+
+
+  .projectDescription {
+    display:
+      -webkit-box;
+
+    margin-top:
+      11px;
+
+    overflow:
+      hidden;
+
+    font-size:
+      .88rem;
+
+    -webkit-line-clamp:
+      3;
+
+    -webkit-box-orient:
+      vertical;
+  }
+
+
+  /* =====================================================
+     FOOTER
+     ===================================================== */
+
+  .footer {
+    min-height:
+      50px;
+
+    margin-top:
+      5px;
+  }
+
+
+  .controls {
+    gap:
+      6px;
+  }
+
+
+
+
+
+  .dot span {
+    width:
+      5px;
+
+    height:
+      5px;
+  }
+
+
+  .dotActive
+  span {
+    width:
+      15px;
+  }
+}
+
+
+/* =========================================================
+   MÓVIL PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .carousel,
+
+  .card {
+    min-height:
+      470px;
+  }
+
+
+  .projectDescription {
+    -webkit-line-clamp:
+      2;
+  }
+
+
+  .projectTimer {
+    width:
+      96px;
+  }
+}
+
+
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
+
+@keyframes projectReveal {
+
+  from {
+    opacity:
+      .82;
+
+    transform:
+      translateY(
+        3px
+      );
+  }
+
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateY(
+        0
+      );
+  }
+}
+
+
+@keyframes projectTimerShine {
+
+  0% {
+    left:
+      -52%;
+  }
+
+
+  45%,
+
+  100% {
+    left:
+      120%;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .card,
+
+  .projectImage,
+
+  .cardSide,
+
+  .dot span,
+
+  .projectTimerValue,
+
+  .projectTimerValue i {
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+  }
+}
+/* Enlace y controles estables; únicamente el contenido cambia de entrada. */
+.cardLink, .cardVisual { position: absolute; inset: 0; display: block; }
+.cardLink { border-radius: inherit; }
+.cardVisual { animation: projectReveal var(--motion-slide) var(--motion-ease) both; }
+.cardVisual[data-direction="1"] { animation-name: projectFromRight; }
+.cardVisual[data-direction="-1"] { animation-name: projectFromLeft; }
+.cardActive .cardVisual {
+  translate: var(--carrusel-desplazamiento, 0px) 0;
+  transition: translate var(--motion-base) var(--motion-ease);
+}
+.carousel[data-arrastrando] .cardVisual { transition: none; }
+.carousel[data-single] { grid-template-columns: minmax(0, 1fr); }
+.projectImage { -webkit-user-drag: none; user-select: none; }
+.media { pointer-events: none; }
+.cardLink:focus-visible { outline: 2px solid var(--color-ink); outline-offset: -4px; }
+.dot:focus-visible, .sideHit:focus-visible { outline: 2px solid var(--color-ink); outline-offset: -2px; }
+@keyframes projectFromRight { from { opacity: .82; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes projectFromLeft { from { opacity: .82; transform: translateX(-28px); } to { opacity: 1; transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) { .cardVisual, .cardActive .cardVisual { animation: none; transition: none; } }
+@media (max-width: 430px) { .footer { grid-template-columns: 1fr auto; gap: var(--space-tight); } .footerSpacer { display: none; } .pagination { grid-column: 1; } .controls { grid-column: 2; } }

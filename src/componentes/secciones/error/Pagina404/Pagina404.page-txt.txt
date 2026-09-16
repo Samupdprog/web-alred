@@ -1,0 +1,110 @@
+PAGINA 404 — ALRED
+===================
+
+OBJETIVO
+--------
+Recrear la composición de la referencia manteniendo
+el sistema visual real de Alred.
+
+Diseño:
+- 404 grande centrado;
+- título corto;
+- descripción;
+- CTA global;
+- enlace global;
+- fondo muy claro;
+- halos azul/lila sutiles;
+- responsive.
+
+
+HEADER Y FOOTER
+---------------
+NO se vuelven a renderizar dentro de Pagina404.
+
+Esto es intencionado.
+
+La 404 vive dentro de:
+
+src/app/[locale]/
+
+y por tanto utiliza automáticamente:
+
+src/app/[locale]/layout.tsx
+
+Ese layout ya contiene:
+- Header global
+- Footer global
+
+Así evitamos duplicarlos.
+
+
+ARCHIVOS
+--------
+src/componentes/secciones/error/Pagina404/Pagina404.tsx
+src/componentes/secciones/error/Pagina404/Pagina404.module.css
+src/componentes/secciones/error/Pagina404/Pagina404.page-txt.txt
+src/componentes/secciones/error/Pagina404/index.ts
+
+src/app/[locale]/not-found.tsx
+src/app/[locale]/[...notFound]/page.tsx
+
+
+POR QUÉ HAY [...notFound]
+-------------------------
+La ruta catch-all garantiza que:
+
+/es/cualquier-cosa
+/en/cualquier-cosa
+
+se resuelvan dentro del layout localizado antes de lanzar
+notFound().
+
+Por eso la página mantiene Header y Footer.
+
+
+URL SIN IDIOMA
+--------------
+Con el proxy de next-intl instalado anteriormente:
+
+/cualquier-cosa
+→ /es/cualquier-cosa
+
+y después aparece esta 404 con Header + Footer.
+
+
+ARCHIVO ANTIGUO
+---------------
+Si todavía tienes:
+
+src/app/not-found.tsx
+
+puedes dejarlo como fallback global.
+
+La experiencia pública normal pasará por el locale gracias
+al proxy y utilizará la 404 de [locale].
+
+
+NO NECESITA
+-----------
+- imágenes nuevas;
+- SVG;
+- librerías;
+- JS adicional;
+- modificar Header;
+- modificar Footer;
+- modificar globals.css.
+
+
+PRUEBAS
+-------
+http://localhost:3000/es/esto-no-existe
+http://localhost:3000/en/esto-no-existe
+
+Y, con proxy activo:
+
+http://localhost:3000/esto-no-existe
+
+
+VALIDACIÓN
+----------
+npm run build

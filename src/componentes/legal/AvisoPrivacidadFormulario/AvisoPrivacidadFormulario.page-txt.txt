@@ -1,0 +1,18 @@
+AVISO PRIVACIDAD FORMULARIO
+==========================
+
+Colócalo inmediatamente debajo del formulario o del botón de envío.
+
+Import:
+import { AvisoPrivacidadFormulario } from "@/componentes/legal/AvisoPrivacidadFormulario";
+
+Uso:
+<AvisoPrivacidadFormulario locale={locale} />
+
+NO añade checkbox obligatorio.
+
+La finalidad del formulario es responder a la petición del usuario
+y, cuando corresponda, preparar una propuesta o presupuesto.
+
+No utilizar estos datos para newsletters o campañas comerciales
+sin una base jurídica independiente.

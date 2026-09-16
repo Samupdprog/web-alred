@@ -1,0 +1,117 @@
+ALRED — CONTACTO + ATRIBUCIÓN EN EMAIL
+====================================
+
+COPIAR / SUSTITUIR
+------------------
+src/app/api/contacto/route.ts
+
+src/componentes/secciones/contacto/FormulariosContacto02/
+  FormulariosContacto02.tsx
+  FormulariosContacto02.module.css
+  FormulariosContacto02.types.ts
+  FormulariosContacto02.page-txt.txt
+  index.ts
+
+src/app/[locale]/contacto/page.tsx
+src/app/[locale]/privacidad/page.tsx
+src/app/[locale]/cookies/page.tsx
+
+Opcional/documentación:
+docs/contacto-atribucion-email.md
+
+
+QUÉ AÑADE
+---------
+El email recibido incluye:
+
+CONTACTO
+- nombre
+- apellido
+- empresa
+- teléfono
+- correo
+
+PROYECTO
+- formulario corto/largo
+- necesidad/es
+- otra necesidad
+- mensaje
+
+ORIGEN
+- landing inicial
+- página de envío
+- referrer inicial sin query
+- utm_source
+- utm_medium
+- utm_campaign
+- utm_content
+- utm_term
+- utm_id
+
+CONTEXTO
+- idioma
+- dispositivo genérico
+- navegador genérico
+- sistema operativo genérico
+- fecha
+
+PRIVACIDAD
+- privacidad leída
+- versión
+- IP almacenada: No
+- fingerprinting: No
+
+
+NO AÑADE
+--------
+- IP
+- geolocalización
+- fingerprint
+- gclid/fbclid
+- Clarity ID
+- user-agent completo
+
+
+NO USA STORAGE PARA ATRIBUCIÓN
+------------------------------
+No cookies.
+No localStorage.
+No sessionStorage.
+
+Se aprovecha la URL inicial del documento mediante
+PerformanceNavigationTiming mientras dura la navegación SPA.
+
+
+CLARITY
+-------
+El formulario entero queda:
+
+data-clarity-mask="true"
+
+
+CREDENCIALES
+------------
+Usar solo .env.local:
+
+CONTACT_SMTP_USER=
+CONTACT_SMTP_APP_PASSWORD=
+CONTACT_TO_EMAIL=
+
+Nunca poner la contraseña Gmail en código.
+
+
+PRUEBA
+------
+1. Configura .env.local
+2. npm run dev
+3. Abre por ejemplo:
+
+http://localhost:3000/es/contacto?utm_source=prueba&utm_medium=test&utm_campaign=alred
+
+4. Envía el formulario.
+5. Revisa el correo.
+
+VALIDAR
+-------
+npm run lint
+npm run build

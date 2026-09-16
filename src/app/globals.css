@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--color-canvas);
+  --color-foreground: var(--color-ink);
+  --color-muted: var(--color-muted);
+  --color-border: var(--color-border);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+
+/* =========================================================
+   ALRED — TOKENS GLOBALES
+   ========================================================= */
+
+:root {
+  /* =====================================================
+     COLORES
+     ===================================================== */
+
+  --color-canvas: #ffffff;
+  --color-surface: #f8f8f6;
+  --color-surface-strong: #ffffff;
+
+  --color-ink: #111111;
+  --color-muted: #747470;
+
+  --color-border: rgba(17, 17, 17, 0.14);
+
+
+  /* =====================================================
+     MATERIALES UI
+     ===================================================== */
+
+  --ui-material-light:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f7f7f6 100%
+    );
+
+  --ui-material-dark:
+    linear-gradient(
+      180deg,
+      #1d1d22 0%,
+      #131317 100%
+    );
+
+  --ui-on-dark: #ffffff;
+
+  --ui-border-light:
+    rgba(17, 17, 17, 0.14);
+
+  --ui-border-dark:
+    rgba(255, 255, 255, 0.14);
+
+  --ui-border-soft:
+    rgba(0, 0, 0, 0.06);
+
+  --ui-border-light-hover:
+    rgba(17, 17, 17, 0.20);
+
+  --ui-border-dark-hover:
+    rgba(255, 255, 255, 0.22);
+
+
+  /* =====================================================
+     RADIOS
+     ===================================================== */
+
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+
+
+  /* =====================================================
+     ESPACIADO
+     ===================================================== */
+
+  --space-page: 16px;
+  --space-section: 48px;
+  --space-tight: 18px;
+
+  --space-between-sections: 150px;
+
+  /* Superficies de las demostraciones y su escala interna compartida. */
+  --color-accent: #78639f;
+  --color-success: #28775c;
+  --color-visual-muted: #696373;
+  --ui-visual-tint: #f1edf8;
+  --ui-visual-blue: #edf3fa;
+  --ui-visual-warm: #f7f1ed;
+  --ui-visual-glass: linear-gradient(135deg, #ffffff, #ffffffc7);
+  --ui-visual-shadow: 0 18px 38px -22px #55436c45, inset 0 1px 0 #fff;
+  --space-visual: 24px;
+  --space-visual-tight: 12px;
+
+
+  /* =====================================================
+     LAYOUT
+     ===================================================== */
+
+  --content-max: 1440px;
+
+
+  /* =====================================================
+     MOVIMIENTO
+     ===================================================== */
+
+  --motion-fast: 160ms;
+  --motion-base: 260ms;
+  --motion-slide: 650ms;
+  --size-touch-target: 44px;
+  --motion-reveal: 2600ms;
+  --motion-cycle: 16000ms;
+  --motion-ambient: 8000ms;
+  --motion-visual-transition: 650ms;
+  --motion-fluid-ease: cubic-bezier(.45, 0, .55, 1);
+
+  --motion-ease:
+    cubic-bezier(0.10, 0.5, 0.36, 1);
+
+
+  /* =====================================================
+     REFRACTADO
+     ===================================================== */
+
+  --ui-refract-speed: 8s;
+  --ui-refract-intensity: 0.20;
+
+
+  /* =====================================================
+     BRILLO BOTÓN PRINCIPAL
+     ===================================================== */
+
+  --ui-primary-shine-speed: 7.5s;
+  --ui-primary-shine-opacity: 0.30;
+}
+
+
+/* =========================================================
+   RESPONSIVE GLOBAL
+   ========================================================= */
+
+@media (max-width: 768px) {
+  :root {
+    --radius-lg: 22px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+
+    --space-page: 8px;
+    --space-section: 24px;
+    --space-tight: 12px;
+
+    --space-between-sections: 48px;
+  }
+}
+
+
+/* =========================================================
+   RESET / BASE
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+
+  &.intro-active {
+    overflow: hidden;
+  }
+
+  color: var(--color-ink);
+  background: var(--color-canvas);
+
+  font-family:
+    var(--font-geist-sans),
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* El contenedor es el único propietario del ritmo vertical de sus secciones.
+   Incluir el hero como primer hijo para mantener también esa distancia. */
+.section-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-between-sections);
+  padding-block-end: var(--space-between-sections);
+}
+
+.section-stack > :where(section) {
+  margin-block: 0;
+}

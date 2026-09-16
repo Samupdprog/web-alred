@@ -1,0 +1,649 @@
+/* =========================================================
+   DESPUESENVIO01
+   Referencia visual:
+   gran cabecera + tres bloques con imagen de fondo.
+   Sin eyebrow, sin span decorativo y sin líneas superiores.
+   ========================================================= */
+
+.section {
+  width:
+    min(
+      calc(
+        100% -
+        (var(--space-page) * 2)
+      ),
+      var(--content-max)
+    );
+
+  margin-inline:
+    auto;
+}
+
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+
+.header {
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    );
+
+  gap:
+    26px;
+
+  align-items:
+    end;
+}
+
+
+.title {
+  max-width:
+    8.5ch;
+
+  margin:
+    0;
+
+  color:
+    var(--color-ink);
+
+  font-size:
+    clamp(
+      2.9rem,
+      11vw,
+      4.25rem
+    );
+
+  line-height:
+    .92;
+
+  letter-spacing:
+    -.064em;
+
+  font-weight:
+    510;
+
+  text-wrap:
+    balance;
+}
+
+
+.description {
+  max-width:
+    39rem;
+
+  margin:
+    0;
+
+  color:
+    var(--color-muted);
+
+  font-size:
+    .98rem;
+
+  line-height:
+    1.58;
+
+  letter-spacing:
+    -.018em;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.grid {
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    );
+
+  gap:
+    16px;
+
+  margin-top:
+    42px;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.card {
+  position:
+    relative;
+
+  min-width:
+    0;
+
+  min-height:
+    360px;
+
+  overflow:
+    hidden;
+
+  isolation:
+    isolate;
+
+  border:
+    1px solid
+    rgba(
+      17,
+      17,
+      17,
+      .08
+    );
+
+  border-radius:
+    22px;
+
+  background:
+    #f7f8fa;
+
+  box-shadow:
+    0
+    18px
+    44px
+    rgba(
+      17,
+      17,
+      17,
+      .035
+    );
+
+  transition:
+    transform
+    var(--motion-base)
+    var(--motion-ease),
+
+    box-shadow
+    var(--motion-base)
+    var(--motion-ease),
+
+    border-color
+    var(--motion-base)
+    var(--motion-ease);
+}
+
+
+.cardMedia {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    0;
+
+  display:
+    block;
+}
+
+
+.cardImage {
+  display:
+    block;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    cover;
+
+  object-position:
+    var(--fondo-x-mobile)
+    var(--fondo-y-mobile);
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+
+  transform:
+    scale(
+      1.01
+    );
+
+  transition:
+    transform
+    780ms
+    var(--motion-ease);
+}
+
+
+/*
+ * Mantiene la lectura limpia si la imagen entra ligeramente
+ * detrás del texto. Es muy suave y no "mata" la imagen.
+ */
+.cardVeil {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    1;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      )
+      0%,
+
+      rgba(
+        255,
+        255,
+        255,
+        .90
+      )
+      30%,
+
+      rgba(
+        255,
+        255,
+        255,
+        .38
+      )
+      52%,
+
+      rgba(
+        255,
+        255,
+        255,
+        0
+      )
+      72%
+    );
+}
+
+
+.cardContent {
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  max-width:
+    33rem;
+
+  padding:
+    26px
+    24px
+    28px;
+}
+
+
+.cardTitle {
+  margin:
+    0;
+
+  color:
+    var(--color-ink);
+
+  font-size:
+    clamp(
+      1.7rem,
+      7.7vw,
+      2.25rem
+    );
+
+  line-height:
+    1;
+
+  letter-spacing:
+    -.052em;
+
+  font-weight:
+    520;
+
+  text-wrap:
+    balance;
+}
+
+
+.cardDescription {
+  max-width:
+    30rem;
+
+  margin:
+    14px
+    0
+    0;
+
+  color:
+    color-mix(
+      in srgb,
+      var(--color-muted)
+      94%,
+      transparent
+    );
+
+  font-size:
+    .94rem;
+
+  line-height:
+    1.52;
+
+  letter-spacing:
+    -.016em;
+
+  text-wrap:
+    pretty;
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  .section {
+    width:
+      calc(
+        100% -
+        32px
+      );
+  }
+
+
+  .title {
+    font-size:
+      clamp(
+        2.6rem,
+        12vw,
+        3.4rem
+      );
+  }
+
+
+  .description {
+    font-size:
+      .93rem;
+  }
+
+
+  .grid {
+    gap:
+      14px;
+
+    margin-top:
+      34px;
+  }
+
+
+  .card {
+    min-height:
+      330px;
+
+    border-radius:
+      18px;
+  }
+
+
+  .cardContent {
+    padding:
+      22px
+      18px;
+  }
+
+
+  .cardTitle {
+    font-size:
+      1.82rem;
+  }
+
+
+  .cardDescription {
+    margin-top:
+      11px;
+
+    font-size:
+      .9rem;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (min-width: 720px) {
+
+  .header {
+    grid-template-columns:
+      minmax(
+        0,
+        .95fr
+      )
+      minmax(
+        300px,
+        .72fr
+      );
+
+    gap:
+      56px;
+  }
+
+
+  .description {
+    justify-self:
+      end;
+  }
+
+
+  .grid {
+    margin-top:
+      54px;
+  }
+
+
+  .card {
+    min-height:
+      400px;
+  }
+
+
+  .cardContent {
+    padding:
+      30px
+      28px;
+  }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 900px) {
+
+  .grid {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap:
+      16px;
+  }
+
+
+  .card {
+    min-height:
+      420px;
+  }
+
+
+  .cardImage {
+    object-position:
+      var(--fondo-x)
+      var(--fondo-y);
+  }
+
+
+  .cardContent {
+    padding:
+      30px
+      28px
+      32px;
+  }
+
+
+  .cardTitle {
+    font-size:
+      clamp(
+        1.8rem,
+        2.3vw,
+        2.35rem
+      );
+  }
+
+}
+
+
+/* =========================================================
+   DESKTOP GRANDE
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+  .title {
+    font-size:
+      clamp(
+        4.25rem,
+        5.6vw,
+        6rem
+      );
+  }
+
+
+  .description {
+    font-size:
+      1.02rem;
+  }
+
+
+  .grid {
+    gap:
+      18px;
+
+    margin-top:
+      64px;
+  }
+
+
+  .card {
+    min-height:
+      455px;
+  }
+
+
+  .cardContent {
+    padding:
+      34px
+      32px
+      34px;
+  }
+
+
+  .cardDescription {
+    font-size:
+      .96rem;
+  }
+
+}
+
+
+/* =========================================================
+   HOVER REAL
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .card:hover {
+    transform:
+      translateY(
+        -3px
+      );
+
+    border-color:
+      rgba(
+        17,
+        17,
+        17,
+        .11
+      );
+
+    box-shadow:
+      0
+      24px
+      56px
+      rgba(
+        17,
+        17,
+        17,
+        .055
+      );
+  }
+
+
+  .card:hover
+  .cardImage {
+    transform:
+      scale(
+        1.025
+      );
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .card,
+  .cardImage {
+    transition:
+      none !important;
+  }
+
+}

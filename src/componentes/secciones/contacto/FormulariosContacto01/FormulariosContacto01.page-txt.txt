@@ -1,0 +1,213 @@
+FORMULARIOSCONTACTO01 — GUÍA
+=============================
+
+OBJETIVO
+--------
+Dos formularios de contacto en una única sección:
+
+1. Contacto rápido.
+2. Formulario detallado.
+
+El componente está diseñado mobile-first y utiliza los patrones visuales
+globales de Alred.
+
+
+RUTA
+----
+src/componentes/secciones/contacto/FormulariosContacto01/
+
+
+USO BÁSICO
+----------
+
+<FormulariosContacto01 />
+
+
+ENDPOINT
+--------
+Por defecto ambos formularios hacen:
+
+POST /api/contacto
+
+en JSON.
+
+Cada envío incluye:
+
+tipo: "rapido"
+
+o:
+
+tipo: "detallado"
+
+Se puede cambiar:
+
+<FormulariosContacto01
+  endpoint="/api/contacto"
+/>
+
+
+FORMULARIO RÁPIDO
+-----------------
+Incluye:
+
+- Nombre — obligatorio.
+- Apellidos — opcional.
+- Empresa — opcional.
+- Teléfono — obligatorio.
+- Correo — obligatorio.
+- Mensaje — opcional.
+
+
+FORMULARIO DETALLADO
+--------------------
+Incluye:
+
+- Nombre.
+- Apellidos.
+- Empresa.
+- Teléfono.
+- Correo.
+- Selección múltiple de necesidades.
+- Campo "Otro" dinámico.
+- Explicación del problema u objetivo.
+
+
+OPCIONES MÚLTIPLES
+------------------
+El usuario puede marcar simultáneamente:
+
+- Página web.
+- Tienda online.
+- Software o herramienta de gestión.
+- Automatización.
+- Integración entre herramientas.
+- Dashboard o control de datos.
+- Otro.
+
+Ejemplo:
+
+Automatización + integración + dashboard
+
+es totalmente válido.
+
+
+AÑADIR OPCIONES
+---------------
+No es necesario modificar el componente.
+
+Desde page.tsx:
+
+<FormulariosContacto01
+  opcionesNecesidad={[
+    {
+      id: "web",
+      texto: "Página web",
+    },
+    {
+      id: "automatizacion",
+      texto: "Automatización",
+    },
+    {
+      id: "ia",
+      texto: "Solución con IA",
+    },
+    {
+      id: "otro",
+      texto: "Otro",
+      esOtro: true,
+    },
+  ]}
+/>
+
+Solo una opción debería llevar:
+
+esOtro: true
+
+porque es la que activa el campo adicional.
+
+
+VALIDACIONES
+------------
+Nombre:
+mínimo 2 caracteres, máximo 60.
+
+Apellidos:
+opcional, máximo 80.
+
+Empresa:
+opcional, máximo 120.
+
+Teléfono:
+obligatorio.
+Permite formatos internacionales y comprueba entre 7 y 15 dígitos.
+
+Correo:
+obligatorio y validado.
+
+Mensaje rápido:
+opcional, máximo 1800 caracteres.
+
+Formulario detallado:
+debe seleccionar al menos una necesidad.
+
+Otro:
+si se selecciona, el texto pasa a ser obligatorio.
+
+Detalle:
+obligatorio, mínimo 15 y máximo 2500 caracteres.
+
+
+ACCESIBILIDAD
+-------------
+- labels reales.
+- aria-invalid.
+- aria-describedby.
+- errores con role="alert".
+- estado de envío con aria-live.
+- focus visible.
+- objetivos táctiles grandes.
+- no depende del color para errores.
+- reduced motion.
+
+
+RESPONSIVE
+----------
+Móvil:
+formularios apilados.
+campos a una columna.
+checkboxes a una columna.
+
+Tablet:
+campos y opciones pasan a dos columnas.
+
+Desktop:
+contacto rápido a la izquierda.
+formulario detallado a la derecha.
+el rápido queda sticky mientras se completa el detallado.
+
+
+NOTA DE BACKEND
+---------------
+El componente solo resuelve interfaz, validación y POST.
+
+Debes crear /api/contacto o cambiar `endpoint` para:
+
+- enviar email;
+- guardar lead;
+- pasar datos a n8n;
+- enviar WhatsApp interno;
+- guardar en CRM;
+- etc.
+
+
+EXPORT
+------
+src/componentes/secciones/contacto/index.ts
+
+export * from "./FormulariosContacto01";
+
+Y si existe un barrel general:
+
+src/componentes/secciones/index.ts
+
+export * from "./contacto";

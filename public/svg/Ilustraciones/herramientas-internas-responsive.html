@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Búsqueda inteligente</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #1c1c1c;
+      --panel: #111111;
+      --border: rgba(255, 255, 255, 0.1);
+      --line: rgba(255, 255, 255, 0.13);
+      --white: #f5f5f5;
+    }
+
+    body {
+      min-height: 100vh;
+
+      display: grid;
+      place-items: center;
+
+      padding: 30px;
+
+      background: #101010;
+
+      color: white;
+
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    /* =====================================================
+       COMPONENTE
+    ===================================================== */
+
+    .search-visual {
+      position: relative;
+
+      width: min(510px, 100%);
+      height: 380px;
+
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle at 50% 46%,
+          rgba(255, 255, 255, 0.028),
+          transparent 46%
+        ),
+        #1c1c1c;
+
+      perspective: 1000px;
+
+      isolation: isolate;
+    }
+
+    /* =====================================================
+       GRID DE FONDO
+    ===================================================== */
+
+    .dot-grid {
+      position: absolute;
+      inset: 0;
+
+      opacity: 0.18;
+
+      pointer-events: none;
+
+      background-image:
+        radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.15) 0.7px,
+          transparent 0.9px
+        );
+
+      background-size:
+        18px 18px;
+
+      mask-image:
+        radial-gradient(
+          ellipse at center,
+          #000 0%,
+          rgba(0,0,0,.8) 48%,
+          transparent 83%
+        );
+    }
+
+    /* =====================================================
+       ESCENA 3D
+    ===================================================== */
+
+    .tilt-stage {
+      position: absolute;
+      inset: 0;
+
+      transform-style:
+        preserve-3d;
+
+      will-change:
+        transform;
+    }
+
+    /* =====================================================
+       ÓRBITA
+    ===================================================== */
+
+    .orbit-wrap {
+      position: absolute;
+
+      left: 50%;
+      top: 49%;
+
+      width: 270px;
+      height: 270px;
+
+      transform:
+        translate(-50%, -50%)
+        translateZ(-20px);
+
+      pointer-events: none;
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 0;
+
+      border-radius: 50%;
+
+      border:
+        1px dashed
+        rgba(255,255,255,.10);
+
+      animation:
+        orbitMotion 36s
+        linear infinite;
+    }
+
+    .orbit::before {
+      content: "";
+
+      position: absolute;
+
+      inset: 14px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid
+        rgba(255,255,255,.025);
+    }
+
+    .orbit::after {
+      content: "";
+
+      position: absolute;
+
+      width: 3px;
+      height: 3px;
+
+      left: 30px;
+      top: 58px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.34);
+
+      box-shadow:
+        190px 142px 0
+        rgba(255,255,255,.16),
+
+        202px 57px 0
+        rgba(255,255,255,.12);
+    }
+
+    @keyframes orbitMotion {
+
+      0% {
+        transform:
+          rotate(0deg)
+          scale(1);
+      }
+
+      25% {
+        transform:
+          rotate(90deg)
+          scale(1.006);
+      }
+
+      50% {
+        transform:
+          rotate(180deg)
+          scale(1.012);
+      }
+
+      75% {
+        transform:
+          rotate(270deg)
+          scale(1.006);
+      }
+
+      100% {
+        transform:
+          rotate(360deg)
+          scale(1);
+      }
+
+    }
+
+    /* =====================================================
+       SOMBRA DOCUMENTO
+    ===================================================== */
+
+    .document-shadow {
+      position: absolute;
+
+      left: 50%;
+      top: 53%;
+
+      width: 150px;
+      height: 180px;
+
+      transform:
+        translate(-50%, -50%)
+        translateZ(-30px);
+
+      border-radius: 50%;
+
+      background:
+        rgba(0,0,0,.28);
+
+      filter:
+        blur(28px);
+
+      pointer-events: none;
+    }
+
+    /* =====================================================
+       DOCUMENTO
+    ===================================================== */
+
+    .document {
+      --doc-x: 0px;
+      --doc-y: 0px;
+
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      width: 160px;
+      height: 210px;
+
+      transform:
+        translate(-50%, -47%)
+        translate3d(
+          var(--doc-x),
+          var(--doc-y),
+          20px
+        );
+
+      border-radius:
+        10px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.12);
+
+      background:
+        linear-gradient(
+          145deg,
+          #131313,
+          #101010
+        );
+
+      box-shadow:
+        0 18px 40px
+        rgba(0,0,0,.25),
+
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+
+      overflow: hidden;
+
+      will-change:
+        transform;
+    }
+
+    .document-inner {
+      position: absolute;
+
+      inset:
+        17px 14px;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 11px;
+    }
+
+    /* =====================================================
+       LÍNEAS
+    ===================================================== */
+
+    .doc-line {
+      position: relative;
+
+      height: 4px;
+
+      flex-shrink: 0;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,.12);
+
+      transition:
+        opacity 350ms ease,
+        background 350ms ease,
+        transform 500ms
+        cubic-bezier(.16,1,.3,1);
+    }
+
+    .doc-line.short {
+      width: 56%;
+    }
+
+    .doc-line.medium {
+      width: 73%;
+    }
+
+    .doc-line.long {
+      width: 92%;
+    }
+
+    .doc-line.tiny {
+      width: 45%;
+    }
+
+    /* =====================================================
+       3 RESULTADOS
+    ===================================================== */
+
+    .doc-line.result {
+      height: 5px;
+
+      cursor: pointer;
+
+      background:
+        rgba(248,248,248,.94);
+
+      box-shadow:
+        0 0 5px
+        rgba(255,255,255,.10);
+    }
+
+    @media (hover:hover) and (pointer:fine) {
+
+      .doc-line.result:hover {
+        background: #fff;
+
+        transform:
+          translateX(2px);
+
+        box-shadow:
+          0 0 7px
+          rgba(255,255,255,.15);
+      }
+
+    }
+
+    /* =====================================================
+       LUPA COMPLETA
+    ===================================================== */
+
+    .magnifier {
+      --lens-scale: 1;
+
+      position: absolute;
+
+      z-index: 20;
+
+      width: 112px;
+      height: 112px;
+
+      pointer-events: none;
+
+      transform:
+        translateZ(58px)
+        scale(var(--lens-scale));
+
+      transform-origin:
+        34px 34px;
+
+      will-change:
+        left,
+        top,
+        transform;
+    }
+
+    /* círculo exterior */
+
+    .magnifier-ring {
+      position: absolute;
+
+      left: 0;
+      top: 0;
+
+      width: 68px;
+      height: 68px;
+
+      border-radius: 50%;
+
+      border:
+        3px solid
+        rgba(248,248,248,.97);
+
+      background:
+        rgba(255,255,255,.012);
+
+      box-shadow:
+        0 2px 7px
+        rgba(0,0,0,.23),
+
+        inset 0 0 0 1px
+        rgba(0,0,0,.30),
+
+        inset 0 0 9px
+        rgba(255,255,255,.02);
+    }
+
+    /* segundo aro interior */
+
+    .magnifier-ring::before {
+      content: "";
+
+      position: absolute;
+
+      inset: 5px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid
+        rgba(255,255,255,.20);
+    }
+
+    /* reflejo sutil */
+
+    .magnifier-ring::after {
+      content: "";
+
+      position: absolute;
+
+      left: 13px;
+      top: 9px;
+
+      width: 25px;
+      height: 11px;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,.18);
+
+      border-radius:
+        50%;
+    }
+
+    /* =====================================================
+       MANGO MÁS FUERA DEL CÍRCULO
+    ===================================================== */
+
+    .magnifier-handle {
+      position: absolute;
+
+      left: 60px;
+      top: 58px;
+
+      width: 45px;
+      height: 8px;
+
+      border-radius:
+        999px;
+
+      background:
+        #f3f3f3;
+
+      transform:
+        rotate(45deg);
+
+      transform-origin:
+        3px 50%;
+
+      box-shadow:
+        0 1px 4px
+        rgba(0,0,0,.24);
+    }
+
+    .magnifier-handle::before {
+      content: "";
+
+      position: absolute;
+
+      left: -7px;
+      top: 0;
+
+      width: 10px;
+      height: 8px;
+
+      border-radius:
+        999px;
+
+      background:
+        #f3f3f3;
+    }
+
+    .magnifier.searching {
+      --lens-scale: 1.018;
+    }
+
+    /* =====================================================
+       LABELS
+    ===================================================== */
+
+    .floating-label {
+      position: absolute;
+
+      z-index: 30;
+
+      display: flex;
+      align-items: center;
+
+      gap: 8px;
+
+      height: 36px;
+
+      padding:
+        0 14px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.07);
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(11,11,11,.96);
+
+      color:
+        rgba(255,255,255,.80);
+
+      font-size:
+        13px;
+
+      white-space: nowrap;
+
+      box-shadow:
+        0 7px 20px
+        rgba(0,0,0,.13);
+
+      pointer-events: none;
+    }
+
+    .floating-label svg {
+      width: 16px;
+      height: 16px;
+
+      fill: none;
+
+      stroke:
+        rgba(255,255,255,.48);
+
+      stroke-width: 1.5;
+
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .results-label {
+      top: 39px;
+      left: 100px;
+
+      transform:
+        translateZ(67px);
+
+      animation:
+        floatResults
+        8s
+        ease-in-out
+        infinite;
+    }
+
+    .filters-label {
+      top: 37px;
+      right: 105px;
+
+      transform:
+        translateZ(67px);
+
+      animation:
+        floatFilters
+        8.8s
+        ease-in-out
+        infinite;
+    }
+
+    .command-label {
+      left: 50%;
+      bottom: 25px;
+
+      height: 38px;
+
+      padding:
+        0 17px;
+
+      background:
+        #f5f5f5;
+
+      color:
+        #252525;
+
+      animation:
+        floatCommand
+        8.3s
+        ease-in-out
+        infinite;
+    }
+
+    .command-label svg {
+      stroke:
+        #444;
+    }
+
+    .command-label .time {
+      color:
+        #8d8d8d;
+
+      font-size: 12px;
+    }
+
+    /* =====================================================
+       FLOATING MUY SUTIL
+    ===================================================== */
+
+    @keyframes floatResults {
+
+      0%,
+      100% {
+        transform:
+          translateY(0)
+          translateZ(67px);
+      }
+
+      50% {
+        transform:
+          translateY(-2px)
+          translateZ(67px);
+      }
+
+    }
+
+    @keyframes floatFilters {
+
+      0%,
+      100% {
+        transform:
+          translateY(0)
+          translateZ(67px);
+      }
+
+      50% {
+        transform:
+          translateY(2px)
+          translateZ(67px);
+      }
+
+    }
+
+    @keyframes floatCommand {
+
+      0%,
+      100% {
+        transform:
+          translateX(-50%)
+          translateY(0)
+          translateZ(72px);
+      }
+
+      50% {
+        transform:
+          translateX(-50%)
+          translateY(-2px)
+          translateZ(72px);
+      }
+
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 540px) {
+
+      body {
+        padding: 12px;
+      }
+
+      .search-visual {
+        height: 350px;
+      }
+
+      .document {
+        width: 150px;
+        height: 200px;
+      }
+
+      .orbit-wrap {
+        width: 245px;
+        height: 245px;
+      }
+
+      .results-label {
+        left: 28px;
+      }
+
+      .filters-label {
+        right: 28px;
+      }
+
+    }
+
+    /* =====================================================
+       REDUCED MOTION
+    ===================================================== */
+
+    @media (
+      prefers-reduced-motion: reduce
+    ) {
+
+      .orbit,
+      .results-label,
+      .filters-label,
+      .command-label {
+        animation: none;
+      }
+
+    }
+
+  
+
+    /* Responsive mobile: mantiene la lupa legible sin colisiones */
+    @media(max-width:540px){
+      body{padding:10px}
+      .search-visual{width:100%;height:390px;min-width:0}
+      .document{width:142px;height:190px}
+      .document-inner{inset:15px 12px;gap:10px}
+      .orbit-wrap{width:232px;height:232px}
+      .document-shadow{width:135px;height:165px}
+      .magnifier{--lens-scale:.88}
+      .floating-label{height:32px;padding:0 10px;gap:6px;font-size:10.5px}
+      .floating-label svg{width:14px;height:14px}
+      .results-label{left:14px;top:18px}
+      .filters-label{right:14px;top:18px}
+      .command-label{bottom:17px;height:34px;padding:0 13px;font-size:10.5px}
+      .command-label .time{font-size:10px}
+    }
+    @media(max-width:350px){
+      body{padding:6px}
+      .results-label span,.filters-label span{display:none}
+      .results-label,.filters-label{width:32px;padding:0;justify-content:center}
+      .results-label{left:12px}.filters-label{right:12px}
+      .document{width:136px;height:184px}
+      .orbit-wrap{width:220px;height:220px}
+      .magnifier{--lens-scale:.82}
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div
+    class="search-visual"
+    id="searchVisual"
+  >
+
+    <div class="dot-grid"></div>
+
+    <div
+      class="tilt-stage"
+      id="tiltStage"
+    >
+
+      <!-- ÓRBITA -->
+
+      <div class="orbit-wrap">
+        <div class="orbit"></div>
+      </div>
+
+
+      <!-- SOMBRA -->
+
+      <div class="document-shadow"></div>
+
+
+      <!-- DOCUMENTO -->
+
+      <div
+        class="document"
+        id="documentCard"
+      >
+
+        <div
+          class="document-inner"
+          id="documentInner"
+        >
+
+          <div
+            class="doc-line result short"
+            data-lens-x="12"
+          ></div>
+
+          <div class="doc-line medium"></div>
+
+          <div class="doc-line long"></div>
+
+
+          <div
+            class="doc-line result medium"
+            data-lens-x="16"
+          ></div>
+
+          <div class="doc-line short"></div>
+
+          <div class="doc-line long"></div>
+
+
+          <div
+            class="doc-line result long"
+            data-lens-x="10"
+          ></div>
+
+          <div class="doc-line medium"></div>
+
+          <div class="doc-line long"></div>
+
+          <div class="doc-line tiny"></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- LUPA -->
+
+      <div
+        class="magnifier"
+        id="magnifier"
+      >
+
+        <div
+          class="magnifier-ring"
+        ></div>
+
+        <div
+          class="magnifier-handle"
+        ></div>
+
+      </div>
+
+
+      <!-- RESULTADOS -->
+
+      <div
+        class="
+          floating-label
+          results-label
+        "
+      >
+
+        <svg viewBox="0 0 24 24">
+          <path
+            d="
+              M6 3h9
+              l4 4
+              v14
+              H6z
+
+              M15 3v5h5
+            "
+          />
+        </svg>
+
+        <span>
+          12 resultados
+        </span>
+
+      </div>
+
+
+      <!-- FILTROS -->
+
+      <div
+        class="
+          floating-label
+          filters-label
+        "
+      >
+
+        <svg viewBox="0 0 24 24">
+          <path
+            d="
+              M4 5h16
+              l-6 7
+              v6
+              l-4 2
+              v-8z
+            "
+          />
+        </svg>
+
+        <span>
+          Filtros
+        </span>
+
+      </div>
+
+
+      <!-- COMMAND -->
+
+      <div
+        class="
+          floating-label
+          command-label
+        "
+      >
+
+        <svg viewBox="0 0 24 24">
+          <path
+            d="
+              M9 6V4
+              a2 2 0 1 0-2 2
+              h10
+              a2 2 0 1 0-2-2
+              v16
+              a2 2 0 1 0 2-2
+              H7
+              a2 2 0 1 0 2 2
+              z
+            "
+          />
+        </svg>
+
+        <span>
+          factura
+        </span>
+
+        <span class="time">
+          0,03s
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const root =
+      document.getElementById(
+        "searchVisual"
+      );
+
+    const tiltStage =
+      document.getElementById(
+        "tiltStage"
+      );
+
+    const documentCard =
+      document.getElementById(
+        "documentCard"
+      );
+
+    const documentInner =
+      document.getElementById(
+        "documentInner"
+      );
+
+    const magnifier =
+      document.getElementById(
+        "magnifier"
+      );
+
+    const results =
+      [
+        ...root.querySelectorAll(
+          ".doc-line.result"
+        )
+      ];
+
+
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+
+    const MAX_ROTATE_X =
+      2.6;
+
+    const MAX_ROTATE_Y =
+      3.3;
+
+
+    let currentRX = 0;
+    let currentRY = 0;
+
+    let targetRX = 0;
+    let targetRY = 0;
+
+
+    let currentPX = 0;
+    let currentPY = 0;
+
+    let targetPX = 0;
+    let targetPY = 0;
+
+
+    let lensX = 0;
+    let lensY = 0;
+
+    let targetLensX = 0;
+    let targetLensY = 0;
+
+    let lensVX = 0;
+    let lensVY = 0;
+
+    let lensInitialized =
+      false;
+
+    let activeResult =
+      null;
+
+
+    function getLocalDocumentPosition() {
+
+      const width =
+        documentCard.offsetWidth;
+
+      const height =
+        documentCard.offsetHeight;
+
+
+      const left =
+        documentCard.offsetLeft
+        -
+        width / 2;
+
+
+      const top =
+        documentCard.offsetTop
+        -
+        height * 0.47;
+
+
+      return {
+        left,
+        top,
+        width,
+        height
+      };
+
+    }
+
+
+    function setLensToResult(
+      result,
+      immediate = false
+    ) {
+
+      if (!result) {
+        return;
+      }
+
+
+      const doc =
+        getLocalDocumentPosition();
+
+
+      const innerLeft =
+        documentInner.offsetLeft;
+
+      const innerTop =
+        documentInner.offsetTop;
+
+
+      const lineCenterX =
+        doc.left
+        +
+        innerLeft
+        +
+        result.offsetLeft
+        +
+        result.offsetWidth / 2;
+
+
+      const lineCenterY =
+        doc.top
+        +
+        innerTop
+        +
+        result.offsetTop
+        +
+        result.offsetHeight / 2;
+
+
+      const offsetX =
+        Number(
+          result.dataset.lensX
+        ) || 0;
+
+
+      targetLensX =
+        lineCenterX
+        -
+        34
+        +
+        offsetX;
+
+
+      targetLensY =
+        lineCenterY
+        -
+        34;
+
+
+      if (
+        immediate
+        ||
+        !lensInitialized
+      ) {
+
+        lensX =
+          targetLensX;
+
+        lensY =
+          targetLensY;
+
+        lensVX = 0;
+        lensVY = 0;
+
+        lensInitialized =
+          true;
+
+      }
+
+
+      magnifier.classList.add(
+        "searching"
+      );
+
+    }
+
+
+    function setDefaultLens(
+      immediate = false
+    ) {
+
+      const middleResult =
+        results[
+          Math.floor(
+            results.length / 2
+          )
+        ];
+
+
+      setLensToResult(
+        middleResult,
+        immediate
+      );
+
+
+      magnifier.classList.remove(
+        "searching"
+      );
+
+    }
+
+
+    root.addEventListener(
+      "pointermove",
+      event => {
+
+        if (
+          reducedMotion
+        ) {
+          return;
+        }
+
+
+        const rect =
+          root.getBoundingClientRect();
+
+
+        const normalizedX =
+          (
+            (
+              event.clientX -
+              rect.left
+            )
+            /
+            rect.width
+            -
+            0.5
+          )
+          *
+          2;
+
+
+        const normalizedY =
+          (
+            (
+              event.clientY -
+              rect.top
+            )
+            /
+            rect.height
+            -
+            0.5
+          )
+          *
+          2;
+
+
+        targetRY =
+          normalizedX
+          *
+          MAX_ROTATE_Y;
+
+
+        targetRX =
+          normalizedY
+          *
+          -MAX_ROTATE_X;
+
+
+        targetPX =
+          normalizedX
+          *
+          1.8;
+
+
+        targetPY =
+          normalizedY
+          *
+          1.4;
+
+      }
+    );
+
+
+    root.addEventListener(
+      "pointerleave",
+      () => {
+
+        targetRX = 0;
+        targetRY = 0;
+
+        targetPX = 0;
+        targetPY = 0;
+
+      }
+    );
+
+
+    results.forEach(
+      result => {
+
+        result.addEventListener(
+          "pointerenter",
+          () => {
+
+            activeResult =
+              result;
+
+
+            setLensToResult(
+              result
+            );
+
+          }
+        );
+
+
+        result.addEventListener(
+          "pointerdown",
+          () => {
+
+            activeResult =
+              result;
+
+
+            setLensToResult(
+              result
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    documentCard.addEventListener(
+      "pointerleave",
+      () => {
+
+        activeResult =
+          null;
+
+
+        setDefaultLens();
+
+      }
+    );
+
+
+    function animate() {
+
+      currentRX +=
+        (
+          targetRX -
+          currentRX
+        )
+        *
+        0.055;
+
+
+      currentRY +=
+        (
+          targetRY -
+          currentRY
+        )
+        *
+        0.055;
+
+
+      tiltStage.style.transform =
+        `
+          rotateX(
+            ${currentRX}deg
+          )
+
+          rotateY(
+            ${currentRY}deg
+          )
+        `;
+
+
+      currentPX +=
+        (
+          targetPX -
+          currentPX
+        )
+        *
+        0.05;
+
+
+      currentPY +=
+        (
+          targetPY -
+          currentPY
+        )
+        *
+        0.05;
+
+
+      documentCard.style.setProperty(
+        "--doc-x",
+        `${currentPX}px`
+      );
+
+
+      documentCard.style.setProperty(
+        "--doc-y",
+        `${currentPY}px`
+      );
+
+
+      const spring =
+        0.085;
+
+
+      const damping =
+        0.74;
+
+
+      lensVX +=
+        (
+          targetLensX -
+          lensX
+        )
+        *
+        spring;
+
+
+      lensVY +=
+        (
+          targetLensY -
+          lensY
+        )
+        *
+        spring;
+
+
+      lensVX *=
+        damping;
+
+
+      lensVY *=
+        damping;
+
+
+      lensX +=
+        lensVX;
+
+
+      lensY +=
+        lensVY;
+
+
+      magnifier.style.left =
+        `${lensX}px`;
+
+
+      magnifier.style.top =
+        `${lensY}px`;
+
+
+      requestAnimationFrame(
+        animate
+      );
+
+    }
+
+
+    requestAnimationFrame(
+      () => {
+
+        setDefaultLens(
+          true
+        );
+
+
+        animate();
+
+      }
+    );
+
+
+    let resizeTimer;
+
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        clearTimeout(
+          resizeTimer
+        );
+
+
+        resizeTimer =
+          setTimeout(
+            () => {
+
+              if (
+                activeResult
+              ) {
+
+                setLensToResult(
+                  activeResult,
+                  true
+                );
+
+              } else {
+
+                setDefaultLens(
+                  true
+                );
+
+              }
+
+            },
+            80
+          );
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

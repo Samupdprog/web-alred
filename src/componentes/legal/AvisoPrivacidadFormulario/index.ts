@@ -1,0 +1,3 @@
+export {
+  AvisoPrivacidadFormulario,
+} from "./AvisoPrivacidadFormulario";

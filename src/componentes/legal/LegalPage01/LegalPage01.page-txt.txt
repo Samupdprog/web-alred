@@ -1,0 +1,75 @@
+LEGALPAGE01 — ALRED
+===================
+
+RUTA
+----
+src/componentes/legal/LegalPage01/
+
+
+USO
+---
+Componente de lectura para:
+- Aviso legal
+- Política de privacidad
+- Política de cookies
+
+Diseño:
+- muy simple;
+- sin cards;
+- sin iconos;
+- sin pills;
+- ancho de lectura cómodo;
+- responsive;
+- usa los tokens globales de Alred.
+
+
+PRIVACIDAD DE INDEXACIÓN
+------------------------
+Las tres páginas legales incluyen:
+
+robots:
+- index: false
+- follow: false
+- nocache: true
+- noarchive
+- nosnippet
+- noimageindex
+
+No deben añadirse a:
+- sitemap.ts
+- llms.txt
+- JSON-LD
+- metadatos generales
+
+IMPORTANTE:
+NO se bloquean en robots.txt.
+
+Esto es intencionado:
+si se bloquea el rastreo, el buscador puede no llegar
+a leer la directiva noindex.
+
+
+DATOS PERSONALES
+----------------
+Por petición del titular NO se incluyen en los archivos:
+- NIF
+- domicilio particular
+
+Sí se incluyen:
+- Samuel Piñero Díaz
+- Alred
+- info@alred.es
+- 683 382 977
+
+Esto reduce la exposición, pero si Alred opera como
+servicio comercial puede dejar pendiente información exigida
+por la LSSI en el aviso legal.
+
+No se debe presentar esta omisión como cumplimiento completo.
+
+
+HEADER / FOOTER
+---------------
+No se duplican.
+Las páginas viven dentro de /[locale] y heredan automáticamente
+el Header y Footer del layout global.

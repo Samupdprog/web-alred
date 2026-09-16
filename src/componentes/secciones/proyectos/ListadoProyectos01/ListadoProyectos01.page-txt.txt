@@ -1,0 +1,119 @@
+LISTADOPROYECTOS01 — GUÍA PARA page.tsx
+==========================================
+
+QUÉ ES
+------
+Listado reutilizable de proyectos.
+
+Se usa en:
+
+1. /proyectos
+   Muestra todos.
+
+2. /proyectos/[slug]
+   Excluye el proyecto actual y muestra los demás
+   en grupos de 3.
+
+
+============================================================
+USO EN /proyectos
+============================================================
+
+<ListadoProyectos01
+  titulo="Todos los proyectos"
+  descripcion="Soluciones distintas para negocios que trabajan de formas distintas."
+  proyectos={proyectos}
+  baseHref={`/${locale}/proyectos`}
+/>
+
+Al NO pasar porPagina:
+aparecen todos los proyectos.
+
+
+============================================================
+USO EN /proyectos/[slug]
+============================================================
+
+<ListadoProyectos01
+  titulo="Otros proyectos"
+  proyectos={proyectos}
+  excluir={proyecto.slug}
+  porPagina={3}
+  baseHref={`/${locale}/proyectos`}
+/>
+
+
+excluir
+-------
+Slug que no debe mostrarse.
+
+Ejemplo:
+excluir="index-clima"
+
+
+porPagina
+---------
+Cantidad de proyectos de cada grupo.
+
+Ejemplo:
+porPagina={3}
+
+Si existen más:
+aparecen flechas y puntos para pasar al siguiente grupo.
+
+En dispositivos táctiles también se puede cambiar de grupo deslizando:
+- izquierda = siguiente grupo;
+- derecha = grupo anterior.
+
+Si no se pasa:
+se muestran todos.
+
+
+baseHref
+--------
+Base de la URL.
+
+Con idioma:
+baseHref={`/${locale}/proyectos`}
+
+
+titulo
+descripcion
+------------------
+Opcionales.
+
+Permiten reutilizar el bloque con encabezados diferentes.
+
+
+============================================================
+TARJETAS / ACCESIBILIDAD
+============================================================
+
+Toda la tarjeta es un enlace real de Next.js.
+
+Esto significa que NO es necesario acertar sobre "Ver proyecto".
+Se puede pulsar cualquier zona de la tarjeta.
+
+También funciona correctamente con teclado:
+- Tab enfoca la tarjeta completa;
+- Enter abre el proyecto;
+- focus-visible muestra un contorno claro.
+
+El texto "Ver proyecto →" sigue apareciendo como pista visual,
+pero ya no es un enlace independiente anidado.
+
+
+RESPONSIVE
+----------
+Desktop:
+3 columnas.
+
+Tablet:
+2 columnas.
+
+Móvil:
+1 columna.
+
+IMPORTANTE:
+porPagina={3} significa que cada grupo contiene 3 proyectos.
+En móvil esos 3 se apilan verticalmente.

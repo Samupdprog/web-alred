@@ -1,0 +1,562 @@
+.page {
+  width:
+    100%;
+
+  padding:
+    118px
+    var(--space-page)
+    var(--space-between-sections);
+
+  background:
+    var(--color-canvas);
+}
+
+
+/* =========================================================
+   HERO 404
+
+   Inspirado en la referencia:
+   - número protagonista;
+   - contenido centrado;
+   - fondo casi blanco;
+   - halos de color muy suaves;
+   - sin elementos innecesarios.
+   ========================================================= */
+
+.hero {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+
+  overflow:
+    hidden;
+
+  width:
+    min(
+      100%,
+      var(--content-max)
+    );
+
+  min-height:
+    clamp(
+      560px,
+      72svh,
+      760px
+    );
+
+  margin-inline:
+    auto;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  padding:
+    clamp(
+      56px,
+      7vw,
+      104px
+    )
+    clamp(
+      20px,
+      5vw,
+      72px
+    );
+
+  border:
+    1px
+    solid
+    color-mix(
+      in srgb,
+      var(--color-border)
+      55%,
+      transparent
+    );
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    linear-gradient(
+      180deg,
+      #fbfbfd 0%,
+      #f8f9fc 100%
+    );
+}
+
+
+/* =========================================================
+   HALOS
+
+   Todo es CSS. No hacen falta imágenes.
+   ========================================================= */
+
+.glowTopRight {
+  position:
+    absolute;
+
+  z-index:
+    -2;
+
+  top:
+    -32%;
+
+  right:
+    -12%;
+
+  width:
+    min(
+      62vw,
+      900px
+    );
+
+  aspect-ratio:
+    1;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        126,
+        164,
+        255,
+        0.46
+      )
+      0%,
+      rgba(
+        152,
+        181,
+        255,
+        0.22
+      )
+      34%,
+      rgba(
+        197,
+        211,
+        255,
+        0.08
+      )
+      57%,
+      transparent
+      74%
+    );
+
+  filter:
+    blur(20px);
+
+  pointer-events:
+    none;
+}
+
+
+.glowBottomLeft {
+  position:
+    absolute;
+
+  z-index:
+    -2;
+
+  left:
+    -18%;
+
+  bottom:
+    -53%;
+
+  width:
+    min(
+      58vw,
+      820px
+    );
+
+  aspect-ratio:
+    1;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        157,
+        130,
+        255,
+        0.34
+      )
+      0%,
+      rgba(
+        174,
+        151,
+        255,
+        0.17
+      )
+      38%,
+      rgba(
+        204,
+        193,
+        255,
+        0.07
+      )
+      57%,
+      transparent
+      75%
+    );
+
+  filter:
+    blur(25px);
+
+  pointer-events:
+    none;
+}
+
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.content {
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    min(
+      100%,
+      760px
+    );
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  text-align:
+    center;
+}
+
+
+.code {
+  margin:
+    0;
+
+  color:
+    var(--color-ink);
+
+  font-size:
+    clamp(
+      7rem,
+      15vw,
+      13.5rem
+    );
+
+  line-height:
+    0.74;
+
+  font-weight:
+    650;
+
+  letter-spacing:
+    -0.085em;
+}
+
+
+.title {
+  max-width:
+    720px;
+
+  margin:
+    clamp(
+      42px,
+      5vw,
+      58px
+    )
+    0
+    0;
+
+  color:
+    var(--color-ink);
+
+  font-size:
+    clamp(
+      2rem,
+      3.3vw,
+      3.4rem
+    );
+
+  line-height:
+    1;
+
+  font-weight:
+    520;
+
+  letter-spacing:
+    -0.052em;
+
+  text-wrap:
+    balance;
+}
+
+
+.description {
+  max-width:
+    555px;
+
+  margin:
+    18px
+    0
+    0;
+
+  color:
+    var(--color-muted);
+
+  font-size:
+    clamp(
+      0.94rem,
+      1.05vw,
+      1.04rem
+    );
+
+  line-height:
+    1.55;
+
+  text-wrap:
+    balance;
+}
+
+
+.actions {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    16px
+    24px;
+
+  margin-top:
+    32px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media
+(max-width: 900px) {
+  .page {
+    padding-top:
+      102px;
+  }
+
+
+  .hero {
+    min-height:
+      650px;
+  }
+
+
+  .glowTopRight {
+    top:
+      -17%;
+
+    right:
+      -28%;
+
+    width:
+      86vw;
+  }
+
+
+  .glowBottomLeft {
+    left:
+      -35%;
+
+    bottom:
+      -34%;
+
+    width:
+      85vw;
+  }
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media
+(max-width: 768px) {
+  .page {
+    padding:
+      86px
+      var(--space-page)
+      var(--space-between-sections);
+  }
+
+
+  .hero {
+    min-height:
+      min(
+        690px,
+        calc(
+          100svh -
+          102px
+        )
+      );
+
+    padding:
+      70px
+      20px
+      64px;
+
+    border-radius:
+      var(--radius-lg);
+  }
+
+
+  .code {
+    font-size:
+      clamp(
+        6.8rem,
+        32vw,
+        10rem
+      );
+  }
+
+
+  .title {
+    margin-top:
+      42px;
+
+    font-size:
+      clamp(
+        2rem,
+        9vw,
+        2.8rem
+      );
+  }
+
+
+  .description {
+    max-width:
+      400px;
+
+    margin-top:
+      16px;
+
+    font-size:
+      0.95rem;
+
+    line-height:
+      1.5;
+  }
+
+
+  .actions {
+    flex-direction:
+      column;
+
+    gap:
+      18px;
+
+    margin-top:
+      30px;
+  }
+
+
+  .glowTopRight {
+    top:
+      -8%;
+
+    right:
+      -72%;
+
+    width:
+      145vw;
+  }
+
+
+  .glowBottomLeft {
+    left:
+      -72%;
+
+    bottom:
+      -23%;
+
+    width:
+      145vw;
+  }
+}
+
+
+/* =========================================================
+   MÓVIL PEQUEÑO
+   ========================================================= */
+
+@media
+(max-width: 430px) {
+  .hero {
+    min-height:
+      630px;
+
+    padding-inline:
+      17px;
+  }
+
+
+  .code {
+    font-size:
+      clamp(
+        6.2rem,
+        34vw,
+        8.4rem
+      );
+  }
+
+
+  .title {
+    font-size:
+      clamp(
+        1.9rem,
+        9.8vw,
+        2.45rem
+      );
+  }
+}
+
+
+/* =========================================================
+   REDUCIR MOVIMIENTO
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+  .hero,
+  .hero * {
+    scroll-behavior:
+      auto
+      !important;
+  }
+}

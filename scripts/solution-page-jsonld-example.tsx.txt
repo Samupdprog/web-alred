@@ -1,0 +1,67 @@
+import {
+  JsonLd,
+} from "@/componentes/seo/JsonLd";
+
+import {
+  breadcrumbSchema,
+  serviceSchema,
+} from "@/lib/seo/structuredData";
+
+import {
+  siteConfig,
+} from "@/config/site";
+
+
+/*
+Después de obtener `solucion`:
+*/
+
+const base =
+  siteConfig.url.replace(
+    /\/+$/,
+    "",
+  );
+
+const solutionName =
+  "selector" in solucion
+    ? solucion.selector.titulo
+    : solucion.slug;
+
+
+/*
+Dentro del <main>:
+*/
+
+<JsonLd
+  data={[
+    serviceSchema({
+      locale,
+      slug,
+      name:
+        solutionName,
+      description:
+        solucion.seo.description,
+    }),
+
+    breadcrumbSchema([
+      {
+        name:
+          "Inicio",
+        url:
+          `${base}/${locale}`,
+      },
+      {
+        name:
+          "Soluciones",
+        url:
+          `${base}/${locale}/soluciones`,
+      },
+      {
+        name:
+          solutionName,
+        url:
+          `${base}/${locale}/soluciones/${slug}`,
+      },
+    ]),
+  ]}
+/>

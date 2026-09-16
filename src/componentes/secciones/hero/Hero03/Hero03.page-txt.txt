@@ -1,0 +1,161 @@
+HERO03 — GUÍA DE USO
+======================
+
+OBJETIVO
+--------
+Hero editorial premium pensado inicialmente para Contacto.
+
+Mantiene la arquitectura visual de Alred:
+- usa tokens globales;
+- usa Boton y Enlace globales;
+- borde fino alrededor de la sección;
+- sin badges ni elementos decorativos innecesarios;
+- fondo configurable;
+- imagen desktop y móvil separadas;
+- contenido semántico con H1.
+
+
+RUTA
+----
+src/componentes/secciones/hero/Hero03/
+
+
+USO DESDE page.tsx
+------------------
+
+<Hero03
+  titulo={"Cuéntanos lo que\nnecesitas."}
+
+  descripcion="Puedes escribirnos de forma rápida o dejar más detalle si ya tienes claro lo que quieres hacer."
+
+  cta={{
+    texto: "Hablar sobre tu proyecto",
+    href: "#contacto-rapido",
+  }}
+
+  ctaSecundario={{
+    texto: "Ver cómo trabajamos",
+    href: "/es/nosotros",
+  }}
+
+  fondoDesktop="/images/Decorativas/contacto-hero-desktop.jpg"
+  fondoMobile="/images/Decorativas/contacto-hero-mobile.jpg"
+
+  fondoX={50}
+  fondoY={50}
+
+  fondoXMobile={62}
+  fondoYMobile={50}
+
+  velo={0.74}
+  veloMobile={0.84}
+/>
+
+
+PARÁMETROS
+----------
+
+titulo
+------
+Texto principal H1.
+
+Se puede usar salto de línea con "\n" si el diseño de la página lo necesita.
+
+
+descripcion
+-----------
+Texto de apoyo opcional.
+
+
+cta
+---
+CTA principal obligatorio.
+Usa el componente global Boton variante="principal".
+
+
+ctaSecundario
+-------------
+Opcional.
+Usa el componente global Enlace variante="subrayado".
+
+
+fondoDesktop
+------------
+Imagen del hero en escritorio.
+
+
+fondoMobile
+-----------
+Imagen específica para móvil.
+Si no se indica, se reutiliza la de escritorio.
+
+
+fondoX / fondoY
+---------------
+Controlan el encuadre de la imagen desktop.
+Valores recomendados: 0–100.
+
+
+fondoXMobile / fondoYMobile
+---------------------------
+Controlan el encuadre móvil de forma independiente.
+
+
+velo / veloMobile
+-----------------
+Controlan el velo blanco que protege la lectura del texto.
+
+Valores útiles:
+0.60 = muy visible la imagen
+0.75 = equilibrado
+0.85 = texto muy protegido
+
+
+minHeight
+---------
+Opcional.
+
+Ejemplo:
+
+minHeight="720px"
+
+o:
+
+minHeight="78svh"
+
+
+BORDE Y RESPONSIVE
+------------------
+El borde usa el mismo ritmo global del proyecto:
+
+desktop:
+var(--space-page) = 16px
+
+móvil:
+var(--space-page) = 8px
+
+Por eso siempre queda un pequeño margen exterior y el borde se ajusta
+automáticamente a la pantalla.
+
+
+SEO
+---
+El título es un H1 real.
+
+La imagen puede ser decorativa:
+fondoAlt=""
+
+Si la imagen aporta contenido relevante:
+fondoAlt="Descripción breve"
+
+No añadir badges, keywords visuales o textos auxiliares únicamente por SEO.
+El SEO de la página debe resolverse mediante metadata, contenido real y estructura.
+
+
+EXPORT
+------
+Añadir en:
+
+src/componentes/secciones/hero/index.ts
+
+export * from "./Hero03";

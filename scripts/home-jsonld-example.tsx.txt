@@ -1,0 +1,20 @@
+import {
+  JsonLd,
+} from "@/componentes/seo/JsonLd";
+
+import {
+  organizationSchema,
+  websiteSchema,
+} from "@/lib/seo/structuredData";
+
+
+/*
+Dentro de la Home, preferiblemente cerca del inicio del JSX:
+*/
+
+<JsonLd
+  data={[
+    organizationSchema(),
+    websiteSchema(),
+  ]}
+/>

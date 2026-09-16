@@ -1,0 +1,76 @@
+PROYECTODESTACADO01 — GUÍA PARA page.tsx
+=============================================
+
+QUÉ ES
+------
+Bloque grande para presentar proyectos.
+
+Se usa en:
+
+1. /proyectos
+   Recibe varios proyectos y puede rotar automáticamente.
+
+2. /proyectos/[slug]
+   Recibe un único proyecto y queda fijo.
+
+
+USO ROTATIVO
+------------
+
+<ProyectoDestacado01
+  proyectos={proyectos}
+  rotacion={true}
+  segundos={8}
+  baseHref={`/${locale}/proyectos`}
+/>
+
+
+USO FIJO
+--------
+
+<ProyectoDestacado01
+  proyecto={proyecto}
+/>
+
+
+INTERACCIÓN MÓVIL
+-----------------
+Esta versión prioriza estabilidad en Safari/Chrome reales.
+
+- swipe izquierda: siguiente;
+- swipe derecha: anterior;
+- scroll vertical y pinch-zoom siguen siendo nativos;
+- no se usa pointer capture;
+- no se arrastran tres tarjetas pesadas siguiendo físicamente el dedo;
+- el swipe se reconoce al soltar y dispara una transición breve y consistente;
+- un swipe válido bloquea el click sintético posterior;
+- un tap normal abre el proyecto;
+- multitouch cancela el reconocimiento del carrusel.
+
+Este enfoque es intencionado: sacrifica el efecto de “seguir el dedo” para
+reducir compositing, pointer-capture y diferencias entre WebKit/Chromium.
+
+
+TEMPORIZACIÓN
+-------------
+El autoplay y la barra siguen utilizando useRelojCarrusel.
+
+- un único reloj;
+- pausa durante interacción táctil;
+- pausa con hover real;
+- pausa con teclado/focus;
+- pausa manual;
+- pausa fuera del viewport / pestaña oculta;
+- prefers-reduced-motion desactiva autoplay visual.
+
+Cada cambio manual reinicia el tiempo del nuevo proyecto.
+
+
+ACCESIBILIDAD
+-------------
+- tarjeta completa navegable en modo rotativo;
+- controles reales <button>;
+- hitboxes de 44px mediante --size-touch-target;
+- teclado con flechas izquierda/derecha;
+- focus-visible;
+- no hay enlaces anidados.

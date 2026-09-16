@@ -1,0 +1,116 @@
+FORMULARIOSCONTACTO02 — CONTACTO + ATRIBUCIÓN
+================================================
+
+OBJETIVO
+--------
+Formulario corto/largo con:
+- validación cliente;
+- API real /api/contacto;
+- email mediante Nodemailer;
+- checkbox legal obligatorio;
+- honeypot antispam;
+- español / inglés;
+- responsive;
+- contexto comercial de procedencia;
+- formulario completo enmascarado para Clarity.
+
+ENVÍO REAL
+----------
+El componente usa por defecto:
+
+/api/contacto
+
+Ya no existe éxito simulado.
+
+Solo muestra el estado de éxito cuando la API devuelve:
+{ ok: true }
+
+ATRIBUCIÓN
+----------
+Al enviar voluntariamente el formulario se adjunta:
+
+- página desde la que se envía;
+- landing inicial del documento;
+- referrer inicial sin query string;
+- utm_source;
+- utm_medium;
+- utm_campaign;
+- utm_content;
+- utm_term;
+- utm_id.
+
+La API añade además, a partir de cabeceras técnicas:
+- dispositivo genérico;
+- navegador genérico;
+- sistema operativo genérico;
+- fecha UTC.
+
+NO SE RECOGE PARA EL EMAIL:
+- IP;
+- geolocalización;
+- fingerprint;
+- gclid;
+- fbclid;
+- identificador de Clarity;
+- user-agent completo.
+
+IMPORTANTE
+----------
+No se utiliza:
+- cookie;
+- localStorage;
+- sessionStorage
+
+para conservar los UTM.
+
+En navegación SPA de Next se usa PerformanceNavigationTiming,
+que permite leer la URL con la que comenzó el documento mientras
+el usuario no haga una recarga completa.
+
+Si el usuario recarga en una página intermedia antes de llegar a
+/contacto, esa atribución inicial puede perderse. Es una decisión
+deliberada para reducir tracking persistente.
+
+CLARITY
+-------
+El <form> incluye:
+
+data-clarity-mask="true"
+
+No vincular sesiones de Clarity con:
+- email;
+- nombre;
+- teléfono;
+- identidad del lead.
+
+PRIVACIDAD
+----------
+El checkbox registra:
+- privacidadLeida: true
+- privacidadVersion: "2026-09-15"
+
+No utilizar este checkbox para newsletters o publicidad.
+
+EMAIL
+-----
+El email separa:
+1. Contacto
+2. Proyecto
+3. Origen y atribución
+4. Contexto técnico
+5. Privacidad
+
+El replyTo es el email introducido por la persona.
+
+SEGURIDAD
+---------
+Nunca poner credenciales Gmail en código.
+
+Usar:
+CONTACT_SMTP_USER=
+CONTACT_SMTP_APP_PASSWORD=
+CONTACT_TO_EMAIL=
+
+en .env.local / variables privadas del hosting.
+
+No usar NEXT_PUBLIC_ para secretos.

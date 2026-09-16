@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Webs conectadas</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#1c1c1c;--panel:#101010;--border:rgba(255,255,255,.09);--green:#50c989}
+    body{min-height:100vh;display:grid;place-items:center;padding:24px;background:#0e0e0e;color:#f5f5f5;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    .visual{position:relative;width:min(680px,100%);height:380px;overflow:hidden;background:radial-gradient(circle at 48% 48%,rgba(255,255,255,.03),transparent 46%),var(--bg);perspective:1000px;isolation:isolate}
+    .dots{position:absolute;inset:0;opacity:.18;background-image:radial-gradient(circle,rgba(255,255,255,.15) .8px,transparent 1px);background-size:18px 18px;mask-image:radial-gradient(ellipse at center,#000,rgba(0,0,0,.76) 50%,transparent 87%);pointer-events:none}
+    .stage{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+    .browser{position:absolute;left:49%;top:49%;width:320px;height:218px;transform:translate(-50%,-50%) translateZ(24px);border-radius:14px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(145deg,#141414,#0f0f0f);box-shadow:0 24px 55px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.025);overflow:hidden}
+    .browser-head{height:38px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 12px;gap:9px}
+    .traffic{display:flex;gap:4px}.traffic i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.17)}
+    .url{height:19px;flex:1;border-radius:6px;background:rgba(255,255,255,.04);font-size:8px;color:rgba(255,255,255,.25);display:flex;align-items:center;padding:0 8px}
+    .page{padding:14px 14px 12px}.page-title{height:6px;width:45%;border-radius:999px;background:rgba(255,255,255,.76)}
+    .page-copy{height:4px;border-radius:999px;background:rgba(255,255,255,.1);margin-top:8px}.page-copy.c1{width:76%}.page-copy.c2{width:57%}
+    .form{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .field{height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);display:flex;align-items:center;padding:0 9px;font-size:8px;color:rgba(255,255,255,.27)}
+    .field.wide{grid-column:1/-1}
+    .submit{grid-column:1/-1;height:31px;border-radius:8px;background:#f3f3f3;color:#222;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;position:relative;overflow:hidden}
+    .submit:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);transform:translateX(-120%)}
+    .submit.pulse:after{animation:sweep .65s ease}
+    @keyframes sweep{to{transform:translateX(120%)}}
+
+    .events{position:absolute;right:29px;top:91px;width:180px;display:flex;flex-direction:column;gap:8px;transform:translateZ(60px)}
+    .event{height:42px;border-radius:11px;border:1px solid rgba(255,255,255,.075);background:rgba(10,10,10,.96);display:flex;align-items:center;gap:9px;padding:0 11px;opacity:.3;transform:translateX(12px) scale(.985);transition:opacity .42s ease,transform .5s cubic-bezier(.16,1,.3,1),border-color .35s ease,box-shadow .35s ease}
+    .event.active{opacity:1;transform:translateX(0) scale(1);border-color:rgba(255,255,255,.16);box-shadow:0 0 0 1px rgba(255,255,255,.03),0 0 16px rgba(255,255,255,.05)}
+    .event.done{opacity:.72}
+    .event-icon{width:23px;height:23px;border-radius:7px;border:1px solid rgba(255,255,255,.07);display:grid;place-items:center;background:rgba(255,255,255,.025);font-size:10px}
+    .event.done .event-icon{background:rgba(80,201,137,.1);border-color:rgba(80,201,137,.22)}
+    .event-title{font-size:9px;color:rgba(255,255,255,.7)}
+    .event-meta{font-size:8px;color:rgba(255,255,255,.28);margin-top:2px}
+
+    .badge{position:absolute;z-index:25;height:35px;padding:0 13px;border-radius:999px;border:1px solid rgba(255,255,255,.075);background:rgba(10,10,10,.96);display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,.72);box-shadow:0 8px 22px rgba(0,0,0,.14);pointer-events:none}
+    .badge.top{left:57px;top:37px;transform:translateZ(68px);animation:b1 8s ease-in-out infinite}
+    .badge.bottom{left:50%;bottom:23px;transform:translateX(-50%) translateZ(70px);background:#f5f5f5;color:#242424;animation:b2 8.6s ease-in-out infinite}
+    .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+    @keyframes b1{0%,100%{transform:translateY(0) translateZ(68px)}50%{transform:translateY(-2px) translateZ(68px)}}
+    @keyframes b2{0%,100%{transform:translateX(-50%) translateY(0) translateZ(70px)}50%{transform:translateX(-50%) translateY(2px) translateZ(70px)}}
+
+    @media(max-width:620px){.browser{left:43%;transform:translate(-50%,-50%) translateZ(24px) scale(.9)}.events{right:10px;transform:translateZ(60px) scale(.9);transform-origin:right center}.badge.top{left:18px}}
+    @media(max-width:480px){.browser{left:40%;transform:translate(-50%,-50%) translateZ(24px) scale(.76)}.events{right:-16px;transform:translateZ(60px) scale(.74)}.badge{font-size:10px}}
+    @media(prefers-reduced-motion:reduce){.badge{animation:none!important}}
+  </style>
+</head>
+<body>
+  <div class="visual" id="visual"><div class="dots"></div><div class="stage" id="stage">
+    <div class="badge top"><span class="dot"></span><span>Web conectada al negocio</span></div>
+    <div class="browser"><div class="browser-head"><div class="traffic"><i></i><i></i><i></i></div><div class="url">alred.es/reserva</div></div><div class="page"><div class="page-title"></div><div class="page-copy c1"></div><div class="page-copy c2"></div><div class="form"><div class="field">Nombre</div><div class="field">Fecha</div><div class="field wide">Correo electrónico</div><div class="submit" id="submit">Enviar solicitud</div></div></div></div>
+    <div class="events" id="events">
+      <div class="event" data-event="0"><span class="event-icon">✓</span><div><div class="event-title">Solicitud creada</div><div class="event-meta">Base de datos</div></div></div>
+      <div class="event" data-event="1"><span class="event-icon">€</span><div><div class="event-title">Pago preparado</div><div class="event-meta">Pasarela</div></div></div>
+      <div class="event" data-event="2"><span class="event-icon">↗</span><div><div class="event-title">CRM actualizado</div><div class="event-meta">Cliente sincronizado</div></div></div>
+      <div class="event" data-event="3"><span class="event-icon">✉</span><div><div class="event-title">Aviso enviado</div><div class="event-meta">Email · WhatsApp</div></div></div>
+    </div>
+    <div class="badge bottom"><span>Una acción · varios sistemas</span></div>
+  </div></div>
+  <script>
+    const root=document.getElementById('visual'),stage=document.getElementById('stage'),submit=document.getElementById('submit'),events=[...root.querySelectorAll('.event')];
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let rx=0,ry=0,trx=0,tryy=0,running=false;
+    function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+    function reset(){events.forEach(e=>e.classList.remove('active','done'))}
+    async function cycle(){
+      if(running)return;
+      running=true;
+      reset();
+      await wait(500);
+      submit.classList.remove('pulse'); void submit.offsetWidth; submit.classList.add('pulse');
+      await wait(520);
+      for(let i=0;i<events.length;i++){
+        if(i>0){events[i-1].classList.remove('active');events[i-1].classList.add('done')}
+        events[i].classList.add('active');
+        await wait(420);
+      }
+      events[3].classList.remove('active');
+      events[3].classList.add('done');
+      await wait(1500);
+      running=false;
+      cycle();
+    }
+    root.addEventListener('pointermove',e=>{if(reduced)return;const r=root.getBoundingClientRect();const x=((e.clientX-r.left)/r.width-.5)*2,y=((e.clientY-r.top)/r.height-.5)*2;tryy=x*3.1;trx=-y*2.45});
+    root.addEventListener('pointerleave',()=>{trx=0;tryy=0});
+    function frame(){rx+=(trx-rx)*.055;ry+=(tryy-ry)*.055;stage.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;requestAnimationFrame(frame)}
+    frame();
+    cycle();
+  </script>
+</body>
+</html>

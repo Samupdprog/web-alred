@@ -1,0 +1,249 @@
+.intro {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--color-ink);
+  background:
+    radial-gradient(circle at 30% 32%, rgb(211 203 248 / 22%), transparent 34%),
+    radial-gradient(circle at 74% 66%, rgb(171 200 239 / 18%), transparent 30%),
+    var(--color-canvas);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 800ms cubic-bezier(.16, 1, .3, 1), visibility 800ms linear;
+}
+
+.leaving {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.ambient,
+.texture,
+.exitLight {
+  position: absolute;
+  pointer-events: none;
+}
+
+.ambient {
+  inset: 0;
+  opacity: 0;
+  animation: ambientIn 1.2s 120ms ease forwards;
+}
+
+.glow {
+  position: absolute;
+  display: block;
+  width: clamp(180px, 28vw, 430px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0;
+}
+
+.glowOne {
+  top: 16%;
+  left: 16%;
+  background: rgb(197 187 238 / 24%);
+  animation: floatOne 4.2s 160ms ease-in-out forwards;
+}
+
+.glowTwo {
+  right: 12%;
+  bottom: 12%;
+  background: rgb(170 202 238 / 21%);
+  animation: floatTwo 4.4s 260ms ease-in-out forwards;
+}
+
+.glowThree {
+  right: 34%;
+  bottom: 22%;
+  width: clamp(100px, 16vw, 250px);
+  background: rgb(229 207 226 / 24%);
+  animation: floatThree 4s 320ms ease-in-out forwards;
+}
+
+.texture {
+  inset: 0;
+  opacity: .18;
+  background-image: linear-gradient(115deg, transparent 0 48%, rgb(17 17 17 / 4%) 49%, transparent 50%);
+  background-size: 9px 9px;
+  mix-blend-mode: multiply;
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lockup {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2vw, 30px);
+}
+
+.mark {
+  position: relative;
+  width: clamp(88px, 8vw, 118px);
+  aspect-ratio: 515 / 382;
+  color: var(--color-ink);
+}
+
+.logo,
+.logoGhost {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logo {
+  opacity: 0;
+  animation: logoIn 1.02s 300ms cubic-bezier(.16, 1, .3, 1) forwards;
+}
+
+.logoGhost {
+  opacity: 0;
+  filter: blur(5px);
+  transform: translate(3px, 2px);
+  animation: ghostIn 1.7s 400ms cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.sheen {
+  position: absolute;
+  inset: -42% auto -42% -60%;
+  width: 38%;
+  display: block;
+  opacity: 0;
+  filter: blur(6px);
+  transform: rotate(18deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 80%), rgb(211 203 248 / 35%), transparent);
+  mix-blend-mode: screen;
+  animation: sheenMove 840ms 1.3s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.word {
+  opacity: 0;
+  color: var(--color-ink);
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: clamp(36px, 4.6vw, 62px);
+  font-weight: 500;
+  letter-spacing: -.055em;
+  line-height: 1;
+  transform: translateX(-14px);
+  filter: blur(7px);
+  animation: wordIn 900ms 880ms cubic-bezier(.16, 1, .3, 1) forwards;
+}
+
+.line {
+  position: relative;
+  width: clamp(145px, 18vw, 240px);
+  height: 1px;
+  margin-top: clamp(28px, 4vh, 44px);
+  overflow: hidden;
+  background: rgb(17 17 17 / 12%);
+  transform: scaleX(0);
+  animation: lineGrow 950ms 1.22s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.line i {
+  position: absolute;
+  inset-block: 0;
+  left: -35%;
+  width: 35%;
+  background: linear-gradient(90deg, transparent, rgb(123 111 188 / 85%), transparent);
+  animation: lineTravel 900ms 1.62s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.exitLight {
+  right: 0;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  opacity: 0;
+  filter: blur(1px);
+  background: linear-gradient(90deg, transparent 0%, rgb(180 169 231 / 15%) 20%, rgb(255 255 255 / 95%) 50%, rgb(171 200 239 / 16%) 80%, transparent 100%);
+  animation: exitLight 500ms 2.74s ease forwards;
+}
+
+@keyframes ambientIn {
+  to { opacity: 1; }
+}
+
+@keyframes floatOne {
+  from { opacity: 0; transform: translate(-28px, -18px) scale(.88); }
+  40% { opacity: 1; }
+  to { opacity: .65; transform: translate(24px, 34px) scale(1.04); }
+}
+
+@keyframes floatTwo {
+  from { opacity: 0; transform: translate(20px, 28px) scale(.88); }
+  45% { opacity: 1; }
+  to { opacity: .65; transform: translate(-24px, -28px) scale(1.06); }
+}
+
+@keyframes floatThree {
+  from { opacity: 0; transform: translateY(18px) scale(.9); }
+  45% { opacity: .8; }
+  to { opacity: .4; transform: translate(10px, -14px) scale(1.07); }
+}
+
+@keyframes logoIn {
+  from { opacity: 0; transform: translateY(10px) scale(.92); filter: blur(7px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes ghostIn {
+  from { opacity: 0; }
+  to { opacity: .14; }
+}
+
+@keyframes sheenMove {
+  from { left: -60%; opacity: 0; }
+  20% { opacity: .8; }
+  to { left: 122%; opacity: 0; }
+}
+
+@keyframes wordIn {
+  from { opacity: 0; transform: translateX(-14px); filter: blur(7px); }
+  to { opacity: 1; transform: translateX(0); filter: blur(0); }
+}
+
+@keyframes lineGrow {
+  to { transform: scaleX(1); }
+}
+
+@keyframes lineTravel {
+  from { left: -35%; }
+  to { left: 100%; }
+}
+
+@keyframes exitLight {
+  to { opacity: 1; }
+}
+
+@media (max-width: 560px) {
+  .lockup {
+    gap: 14px;
+  }
+
+  .mark {
+    width: 84px;
+  }
+
+  .word {
+    font-size: clamp(34px, 12vw, 48px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}

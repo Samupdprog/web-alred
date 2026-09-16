@@ -1,0 +1,36 @@
+/*
+Añade este objeto a `src/datos/soluciones.ts`
+adaptándolo al shape final si has añadido más campos.
+*/
+
+{
+  slug:
+    "marketing-digital",
+
+  hero: {
+    titulo:
+      "Marketing que puedes\nmedir y mejorar.",
+
+    descripcion:
+      "Creamos campañas digitales conectadas con métricas y dashboards para que sepas qué está funcionando, qué genera resultados y dónde merece la pena invertir.",
+  },
+
+  seo: {
+    title:
+      "Marketing digital medible para empresas | Alred",
+
+    description:
+      "Campañas de marketing digital con analítica, dashboards y métricas para medir resultados, entender el rendimiento y mejorar la inversión.",
+  },
+
+  selector: {
+    titulo:
+      "Marketing digital",
+
+    descripcion:
+      "Campañas, analítica y dashboards conectados para convertir el marketing en información que puedes medir y mejorar.",
+
+    imagen:
+      "/images/Soluciones/selector/marketing-digital.png",
+  },
+},

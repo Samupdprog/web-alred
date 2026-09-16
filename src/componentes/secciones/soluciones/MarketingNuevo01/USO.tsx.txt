@@ -1,0 +1,31 @@
+<MarketingNuevo01
+  id="marketing-digital"
+
+  titulo="Marketing que no acaba cuando publicas el anuncio."
+
+  descripcion="Conectamos campañas, promociones, web y datos para saber qué atrae usuarios, qué convierte en contactos o ventas y qué acciones merece la pena repetir o mejorar."
+
+  cta={{
+    texto:
+      "Descubrir marketing digital",
+
+    href:
+      `/${locale}/soluciones/marketing-digital`,
+  }}
+
+  ctaSecundario={{
+    texto:
+      "Ver cómo lo medimos",
+
+    href:
+      `/${locale}/soluciones/marketing-digital#medicion`,
+  }}
+
+  fondoDesktop="/images/Decorativas/background-marketing-digital.png"
+
+  fondoX={50}
+  fondoY={50}
+
+  fondoXMobile={62}
+  fondoYMobile={50}
+/>

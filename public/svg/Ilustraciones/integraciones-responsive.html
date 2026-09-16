@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integraciones</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+
+      background: #0d0d0d;
+
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      color: white;
+    }
+
+    /* ======================================
+       CONTENEDOR
+    ====================================== */
+
+    .integration-card {
+      position: relative;
+
+      width: min(1012px, 100%);
+      height: 330px;
+
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle at 50% 50%,
+          rgba(255, 255, 255, 0.025),
+          transparent 48%
+        ),
+        #1b1b1b;
+    }
+
+    /* ======================================
+       FONDO DE PUNTOS
+    ====================================== */
+
+    .dot-grid {
+      position: absolute;
+      inset: 0;
+
+      opacity: 0.25;
+
+      background-image:
+        radial-gradient(
+          circle,
+          rgba(255,255,255,.17) 1px,
+          transparent 1.2px
+        );
+
+      background-size: 20px 20px;
+
+      mask-image:
+        linear-gradient(
+          to bottom,
+          transparent,
+          black 18%,
+          black 80%,
+          transparent
+        );
+    }
+
+    /* ======================================
+       SVG
+    ====================================== */
+
+    .connections {
+      position: absolute;
+      inset: 0;
+
+      width: 100%;
+      height: 100%;
+
+      z-index: 2;
+
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .connection-track {
+      fill: none;
+
+      stroke:
+        rgba(255,255,255,.075);
+
+      stroke-width: 1.3;
+
+      vector-effect:
+        non-scaling-stroke;
+    }
+
+    .connection-signal {
+      fill: none;
+
+      stroke: rgba(255,255,255,.98);
+
+      stroke-width: 2;
+
+      stroke-linecap: round;
+
+      vector-effect:
+        non-scaling-stroke;
+
+      filter:
+        drop-shadow(
+          0 0 3px
+          rgba(255,255,255,.55)
+        );
+
+      opacity: 0;
+    }
+
+    /* ======================================
+       NODOS
+    ====================================== */
+
+    .source-node,
+    .connect-node {
+      position: absolute;
+
+      z-index: 10;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      white-space: nowrap;
+    }
+
+    .source-node {
+      top: 49px;
+
+      padding:
+        8px 13px;
+
+      transform:
+        translateX(-50%);
+
+      border:
+        1px solid
+        rgba(255,255,255,.08);
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(8,8,8,.92);
+
+      color:
+        rgba(255,255,255,.86);
+
+      font-size: 13px;
+
+      box-shadow:
+        0 4px 20px
+        rgba(0,0,0,.18);
+    }
+
+    .source-node svg {
+      width: 15px;
+      height: 15px;
+
+      fill: none;
+
+      stroke:
+        rgba(255,255,255,.62);
+
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .source-1 {
+      left: 28%;
+    }
+
+    .source-2 {
+      left: 44%;
+    }
+
+    .source-3 {
+      left: 59%;
+    }
+
+    .source-4 {
+      left: 74%;
+    }
+
+    /* ======================================
+       CONECTAR
+    ====================================== */
+
+    .connect-node {
+      left: 50%;
+      top: 150px;
+
+      transform:
+        translateX(-50%);
+
+      padding:
+        9px 17px;
+
+      border-radius:
+        999px;
+
+      background:
+        #f4f4f4;
+
+      color:
+        #151515;
+
+      font-size: 14px;
+
+      transition:
+        transform .16s ease,
+        box-shadow .16s ease;
+    }
+
+    .connect-node svg {
+      width: 17px;
+      height: 17px;
+
+      fill: none;
+
+      stroke:
+        currentColor;
+
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .connect-node.active {
+      transform:
+        translateX(-50%)
+        scale(1.035);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(255,255,255,.045),
+
+        0 0 20px
+        rgba(255,255,255,.14);
+    }
+
+    /* ======================================
+       STATUS
+    ====================================== */
+
+    .status-card {
+      position: absolute;
+
+      z-index: 10;
+
+      left: 50%;
+      bottom: 37px;
+
+      transform:
+        translateX(-50%);
+
+      width: 47%;
+
+      padding:
+        15px 15px 16px;
+
+      border-radius:
+        21px;
+
+      background:
+        rgba(10,10,10,.96);
+
+      border:
+        1px solid
+        rgba(255,255,255,.07);
+
+      box-shadow:
+        0 12px 35px
+        rgba(0,0,0,.28);
+    }
+
+    .status-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      margin-bottom: 13px;
+
+      font-size: 12px;
+    }
+
+    .status-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+
+      border-radius: 50%;
+
+      background:
+        #42bd80;
+
+      box-shadow:
+        0 0 0 2px
+        rgba(66,189,128,.14),
+
+        0 0 8px
+        rgba(66,189,128,.45);
+    }
+
+    .records {
+      color: #68686e;
+    }
+
+    /* ======================================
+       PROGRESO
+    ====================================== */
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+
+      overflow: hidden;
+
+      border-radius:
+        999px;
+
+      background:
+        #292929;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+
+      border-radius:
+        inherit;
+
+      background:
+        linear-gradient(
+          90deg,
+          #ffffff,
+          #ededed
+        );
+
+      /*
+        Más rápido para que la respuesta
+        se note al llegar la señal.
+      */
+      transition:
+        width .28s
+        cubic-bezier(.2,.8,.25,1);
+
+      box-shadow:
+        0 0 10px
+        rgba(255,255,255,.1);
+    }
+
+    /* ======================================
+       RESPONSIVE
+    ====================================== */
+
+    @media (max-width: 700px) {
+
+      .integration-card {
+        height: 310px;
+      }
+
+      .source-node {
+        padding:
+          7px 10px;
+
+        font-size: 11px;
+      }
+
+      .source-node svg {
+        width: 13px;
+        height: 13px;
+      }
+
+      .source-1 {
+        left: 15%;
+      }
+
+      .source-2 {
+        left: 38%;
+      }
+
+      .source-3 {
+        left: 62%;
+      }
+
+      .source-4 {
+        left: 85%;
+      }
+
+      .status-card {
+        width: 80%;
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      .source-node span {
+        display: none;
+      }
+
+      .source-node {
+        width: 34px;
+        height: 34px;
+
+        justify-content:
+          center;
+
+        padding: 0;
+      }
+
+      .status-card {
+        width: 90%;
+      }
+    }
+  
+
+    /* Responsive mobile: nodos compactos, conexiones recalculadas por JS */
+    @media(max-width:620px){
+      body{padding:10px}
+      .integration-card{width:100%;height:360px;min-width:0}
+      .source-node{top:38px;width:36px;height:36px;padding:0;justify-content:center;border-radius:11px}
+      .source-node span{display:none}
+      .source-node svg{width:15px;height:15px}
+      .source-1{left:12%}.source-2{left:37%}.source-3{left:63%}.source-4{left:88%}
+      .connect-node{top:137px;padding:8px 15px;font-size:12px}
+      .connect-node svg{width:15px;height:15px}
+      .status-card{width:calc(100% - 30px);max-width:330px;bottom:31px;padding:13px 13px 14px;border-radius:17px}
+      .status-top{gap:10px;margin-bottom:11px;font-size:10.5px}
+      .status-dot{width:8px;height:8px}
+      .records{white-space:nowrap;font-size:10px}
+      .progress-track{height:7px}
+    }
+    @media(max-width:340px){
+      body{padding:6px}
+      .integration-card{height:350px}
+      .source-node{width:34px;height:34px}
+      .status-card{width:calc(100% - 18px)}
+      .status-top{font-size:10px}
+      .records{font-size:9px}
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div
+    class="integration-card"
+    id="integrationCard"
+  >
+
+    <div class="dot-grid"></div>
+
+    <!-- CONEXIONES -->
+
+    <svg
+      class="connections"
+      viewBox="0 0 1000 330"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <g id="connectionPaths"></g>
+    </svg>
+
+    <!-- CHAT -->
+
+    <div
+      class="source-node source-1"
+    >
+      <svg viewBox="0 0 24 24">
+        <path
+          d="
+            M5 6
+            h14
+            v10
+            H9
+            l-4 3
+            V6Z
+          "
+        />
+      </svg>
+
+      <span>Chat</span>
+    </div>
+
+    <!-- TABLEROS -->
+
+    <div
+      class="source-node source-2"
+    >
+      <svg viewBox="0 0 24 24">
+
+        <rect
+          x="5"
+          y="4"
+          width="14"
+          height="16"
+          rx="2"
+        />
+
+        <path
+          d="
+            M9 8v8
+            M13 8v8
+            M17 8v8
+          "
+        />
+
+      </svg>
+
+      <span>Tableros</span>
+    </div>
+
+    <!-- CRM -->
+
+    <div
+      class="source-node source-3"
+    >
+      <svg viewBox="0 0 24 24">
+
+        <path
+          d="
+            M4 8
+            h6
+            l2 2
+            h8
+            v8
+            H4
+            V8Z
+          "
+        />
+
+      </svg>
+
+      <span>CRM</span>
+    </div>
+
+    <!-- INFORMES -->
+
+    <div
+      class="source-node source-4"
+    >
+      <svg viewBox="0 0 24 24">
+
+        <path
+          d="
+            M5 18V9
+            M10 18V5
+            M15 18v-7
+            M20 18V7
+          "
+        />
+
+      </svg>
+
+      <span>Informes</span>
+    </div>
+
+    <!-- CONECTAR -->
+
+    <div
+      class="connect-node"
+      id="connectNode"
+    >
+      <svg viewBox="0 0 24 24">
+
+        <path
+          d="
+            M9 3v6
+            M15 3v6
+            M7 9h10v4
+            a5 5 0 0 1-5 5
+            a5 5 0 0 1-5-5
+            V9Z
+          "
+        />
+
+        <path
+          d="M12 18v3"
+        />
+
+      </svg>
+
+      <span>Conectar</span>
+    </div>
+
+    <!-- STATUS -->
+
+    <div
+      class="status-card"
+      id="statusCard"
+    >
+
+      <div class="status-top">
+
+        <div class="status-title">
+
+          <span
+            class="status-dot"
+          ></span>
+
+          <span id="statusText">
+            Sincronizando 4 fuentes
+          </span>
+
+        </div>
+
+        <span
+          class="records"
+          id="records"
+        >
+          0 registros
+        </span>
+
+      </div>
+
+      <div class="progress-track">
+
+        <div
+          class="progress-fill"
+          id="progressFill"
+        ></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const card =
+      document.getElementById(
+        "integrationCard"
+      );
+
+    const pathsContainer =
+      document.getElementById(
+        "connectionPaths"
+      );
+
+    const connectNode =
+      document.getElementById(
+        "connectNode"
+      );
+
+    const statusCard =
+      document.getElementById(
+        "statusCard"
+      );
+
+    const progressFill =
+      document.getElementById(
+        "progressFill"
+      );
+
+    const records =
+      document.getElementById(
+        "records"
+      );
+
+    const statusText =
+      document.getElementById(
+        "statusText"
+      );
+
+    const sourceNodes =
+      [
+        ...document.querySelectorAll(
+          ".source-node"
+        )
+      ];
+
+
+    /* =====================================
+       CONFIGURACIÓN
+    ===================================== */
+
+    const TOTAL_RECORDS =
+      12480;
+
+    /*
+      Tiempo entre Chat -> Tableros ->
+      CRM -> Informes
+    */
+    const STAGGER =
+      210;
+
+    /*
+      Tiempo total de cada impulso
+      desde el nodo hasta la barra.
+    */
+    const SIGNAL_DURATION =
+      1380;
+
+    /*
+      Momento aproximado en el que
+      la señal atraviesa Connect.
+    */
+    const CONNECT_POINT =
+      0.67;
+
+    /*
+      La barra reacciona ligeramente
+      ANTES del final de la animación
+      para que coincida visualmente
+      con la entrada de la señal.
+    */
+    const ARRIVAL_POINT =
+      0.955;
+
+
+    let routes = [];
+
+    let animationRunning =
+      false;
+
+    let completedSources =
+      0;
+
+
+    /* =====================================
+       UTILIDADES
+    ===================================== */
+
+    function wait(ms) {
+
+      return new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            ms
+          )
+      );
+
+    }
+
+
+    function getRelativeCenter(
+      element
+    ) {
+
+      const cardRect =
+        card.getBoundingClientRect();
+
+      const rect =
+        element.getBoundingClientRect();
+
+      return {
+
+        x:
+          (
+            rect.left -
+            cardRect.left +
+            rect.width / 2
+          )
+          /
+          cardRect.width
+          *
+          1000,
+
+        y:
+          (
+            rect.top -
+            cardRect.top +
+            rect.height / 2
+          )
+          /
+          cardRect.height
+          *
+          330
+
+      };
+
+    }
+
+
+    function makePath(
+      d,
+      className
+    ) {
+
+      const path =
+        document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path"
+        );
+
+      path.setAttribute(
+        "d",
+        d
+      );
+
+      path.setAttribute(
+        "class",
+        className
+      );
+
+      return path;
+
+    }
+
+
+    /* =====================================
+       CONSTRUIR LÍNEAS
+    ===================================== */
+
+    function buildConnections() {
+
+      pathsContainer.innerHTML =
+        "";
+
+      routes =
+        [];
+
+      const connect =
+        getRelativeCenter(
+          connectNode
+        );
+
+      const status =
+        getRelativeCenter(
+          statusCard
+        );
+
+
+      const connectTopY =
+        connect.y - 18;
+
+      const connectBottomY =
+        connect.y + 18;
+
+      const statusEntryY =
+        status.y - 29;
+
+
+      /* -----------------------------
+         LÍNEA BASE HACIA LA BARRA
+      ----------------------------- */
+
+      const verticalTrackD = `
+        M
+        ${connect.x}
+        ${connectBottomY}
+
+        L
+        ${connect.x}
+        ${statusEntryY}
+      `;
+
+      const verticalTrack =
+        makePath(
+          verticalTrackD,
+          "connection-track"
+        );
+
+      pathsContainer.appendChild(
+        verticalTrack
+      );
+
+
+      /* -----------------------------
+         RUTAS DE LOS 4 NODOS
+      ----------------------------- */
+
+      sourceNodes.forEach(
+        (node, index) => {
+
+          const source =
+            getRelativeCenter(
+              node
+            );
+
+          const spread =
+            Math.abs(
+              connect.x -
+              source.x
+            );
+
+
+          const control1Y =
+            source.y + 46;
+
+
+          const control2Y =
+            connectTopY -
+            Math.min(
+              24 +
+              spread * .03,
+              55
+            );
+
+
+          /* -------------------------
+             LÍNEA GRIS
+          ------------------------- */
+
+          const upperTrackD = `
+            M
+            ${source.x}
+            ${source.y + 13}
+
+            C
+            ${source.x}
+            ${control1Y},
+
+            ${connect.x}
+            ${control2Y},
+
+            ${connect.x}
+            ${connectTopY}
+          `;
+
+
+          const upperTrack =
+            makePath(
+              upperTrackD,
+              "connection-track"
+            );
+
+
+          pathsContainer.appendChild(
+            upperTrack
+          );
+
+
+          /* -------------------------
+             RUTA COMPLETA
+
+             NODO
+               ↓
+             CONNECT
+               ↓
+             BARRA
+          ------------------------- */
+
+          const fullRouteD = `
+            M
+            ${source.x}
+            ${source.y + 13}
+
+            C
+            ${source.x}
+            ${control1Y},
+
+            ${connect.x}
+            ${control2Y},
+
+            ${connect.x}
+            ${connectTopY}
+
+            L
+            ${connect.x}
+            ${connectBottomY}
+
+            L
+            ${connect.x}
+            ${statusEntryY}
+          `;
+
+
+          const signal =
+            makePath(
+              fullRouteD,
+              "connection-signal"
+            );
+
+
+          /*
+            Usamos la longitud REAL
+            del path.
+
+            Esto evita el problema
+            de que aparezca un segundo
+            impulso fantasma.
+          */
+
+          pathsContainer.appendChild(
+            signal
+          );
+
+
+          const length =
+            signal.getTotalLength();
+
+
+          /*
+            Impulso blanco de unos
+            23px.
+
+            La separación es MAYOR
+            que todo el path, por lo
+            que físicamente no puede
+            aparecer un segundo dash.
+          */
+
+          const signalSize =
+            Math.min(
+              24,
+              length * .07
+            );
+
+
+          signal.style.strokeDasharray =
+            `${signalSize} ${length + signalSize + 100}`;
+
+
+          signal.style.strokeDashoffset =
+            `${signalSize}`;
+
+
+          signal.style.opacity =
+            "0";
+
+
+          routes.push({
+
+            signal,
+            length,
+            signalSize,
+            index
+
+          });
+
+        }
+      );
+
+    }
+
+
+    /* =====================================
+       CONTADOR
+    ===================================== */
+
+    function animateRecords(
+      target
+    ) {
+
+      const currentValue =
+        parseInt(
+          records.textContent.replace(
+            /\D/g,
+            ""
+          )
+        ) || 0;
+
+
+      const duration =
+        280;
+
+
+      const startTime =
+        performance.now();
+
+
+      function tick(now) {
+
+        const progress =
+          Math.min(
+            (
+              now -
+              startTime
+            )
+            /
+            duration,
+            1
+          );
+
+
+        const eased =
+          1 -
+          Math.pow(
+            1 - progress,
+            3
+          );
+
+
+        const value =
+          Math.round(
+
+            currentValue +
+
+            (
+              target -
+              currentValue
+            )
+
+            *
+            eased
+
+          );
+
+
+        records.textContent =
+          value.toLocaleString(
+            "es-ES"
+          )
+          +
+          " registros";
+
+
+        if (
+          progress < 1
+        ) {
+
+          requestAnimationFrame(
+            tick
+          );
+
+        }
+
+      }
+
+
+      requestAnimationFrame(
+        tick
+      );
+
+    }
+
+
+    /* =====================================
+       CUANDO LLEGA UN IMPULSO
+    ===================================== */
+
+    function sourceArrived() {
+
+      completedSources++;
+
+
+      const percentage =
+        (
+          completedSources
+          /
+          routes.length
+        )
+        *
+        100;
+
+
+      /*
+        Respuesta inmediata.
+      */
+
+      progressFill.style.width =
+        `${percentage}%`;
+
+
+      const targetRecords =
+        Math.round(
+
+          TOTAL_RECORDS *
+
+          (
+            completedSources
+            /
+            routes.length
+          )
+
+        );
+
+
+      animateRecords(
+        targetRecords
+      );
+
+
+      /*
+        Reacción MUY sutil.
+      */
+
+      statusCard.animate(
+
+        [
+          {
+            transform:
+              "translateX(-50%) scale(1)"
+          },
+
+          {
+            transform:
+              "translateX(-50%) scale(1.008)"
+          },
+
+          {
+            transform:
+              "translateX(-50%) scale(1)"
+          }
+        ],
+
+        {
+          duration: 190,
+          easing: "ease-out"
+        }
+
+      );
+
+
+      if (
+        completedSources ===
+        routes.length
+      ) {
+
+        statusText.textContent =
+          "4 fuentes sincronizadas";
+
+      }
+
+    }
+
+
+    /* =====================================
+       ANIMACIÓN DE UNA FUENTE
+    ===================================== */
+
+    function animateRoute(
+      route
+    ) {
+
+      return new Promise(
+        resolve => {
+
+          const {
+            signal,
+            length,
+            signalSize
+          } = route;
+
+
+          signal.style.opacity =
+            "1";
+
+
+          /*
+            Posición inicial:
+
+            el segmento se encuentra
+            justo antes de entrar
+            en el path.
+          */
+
+          const startOffset =
+            signalSize;
+
+
+          /*
+            Posición final:
+
+            el segmento atraviesa
+            completamente el final.
+
+            Como el gap es mayor que
+            el path completo, NO aparece
+            otro segmento detrás.
+          */
+
+          const endOffset =
+            -length;
+
+
+          const animation =
+            signal.animate(
+
+              [
+                {
+                  strokeDashoffset:
+                    `${startOffset}`
+                },
+
+                {
+                  strokeDashoffset:
+                    `${endOffset}`
+                }
+              ],
+
+              {
+                duration:
+                  SIGNAL_DURATION,
+
+                easing:
+                  "cubic-bezier(.42,0,.16,1)",
+
+                fill:
+                  "forwards"
+              }
+
+            );
+
+
+          /* -------------------------
+             PASO POR CONNECT
+          ------------------------- */
+
+          const connectTimer =
+            setTimeout(
+
+              () => {
+
+                connectNode.classList.add(
+                  "active"
+                );
+
+
+                setTimeout(
+                  () => {
+
+                    connectNode.classList.remove(
+                      "active"
+                    );
+
+                  },
+                  125
+                );
+
+              },
+
+              SIGNAL_DURATION
+              *
+              CONNECT_POINT
+
+            );
+
+
+          /* -------------------------
+             LLEGADA A LA BARRA
+
+             NO esperamos a
+             animation.onfinish.
+          ------------------------- */
+
+          let arrived =
+            false;
+
+
+          const arrivalTimer =
+            setTimeout(
+
+              () => {
+
+                if (
+                  arrived
+                ) {
+                  return;
+                }
+
+
+                arrived =
+                  true;
+
+
+                sourceArrived();
+
+              },
+
+              SIGNAL_DURATION
+              *
+              ARRIVAL_POINT
+
+            );
+
+
+          /* -------------------------
+             FIN REAL
+          ------------------------- */
+
+          animation.onfinish =
+            () => {
+
+              clearTimeout(
+                connectTimer
+              );
+
+              clearTimeout(
+                arrivalTimer
+              );
+
+
+              /*
+                Seguridad:
+                si por cualquier razón
+                no llegó el timer.
+              */
+
+              if (
+                !arrived
+              ) {
+
+                arrived =
+                  true;
+
+                sourceArrived();
+
+              }
+
+
+              signal.style.opacity =
+                "0";
+
+
+              animation.cancel();
+
+
+              resolve();
+
+            };
+
+        }
+      );
+
+    }
+
+
+    /* =====================================
+       CICLO
+    ===================================== */
+
+    async function runSequence() {
+
+      if (
+        animationRunning
+      ) {
+        return;
+      }
+
+
+      animationRunning =
+        true;
+
+
+      completedSources =
+        0;
+
+
+      /* -------------------------
+         RESET
+      ------------------------- */
+
+      progressFill.style.transition =
+        "none";
+
+
+      progressFill.style.width =
+        "0%";
+
+
+      records.textContent =
+        "0 registros";
+
+
+      statusText.textContent =
+        "Sincronizando 4 fuentes";
+
+
+      void progressFill.offsetWidth;
+
+
+      progressFill.style.transition =
+        "width .28s cubic-bezier(.2,.8,.25,1)";
+
+
+      await wait(
+        450
+      );
+
+
+      /* -------------------------
+         LANZAMIENTO ESCALONADO
+
+         Chat
+           ↓ 210ms
+         Tableros
+           ↓ 210ms
+         CRM
+           ↓ 210ms
+         Informes
+
+         Sin esperar a que termine
+         el anterior.
+      ------------------------- */
+
+      const promises =
+        routes.map(
+
+          (
+            route,
+            index
+          ) =>
+
+            new Promise(
+              resolve => {
+
+                setTimeout(
+
+                  async () => {
+
+                    await animateRoute(
+                      route
+                    );
+
+                    resolve();
+
+                  },
+
+                  index *
+                  STAGGER
+
+                );
+
+              }
+            )
+
+        );
+
+
+      await Promise.all(
+        promises
+      );
+
+
+      /*
+        Dejamos ver el resultado
+        completo.
+      */
+
+      await wait(
+        1600
+      );
+
+
+      /* -------------------------
+         RESET LIMPIO
+      ------------------------- */
+
+      progressFill.style.transition =
+        "none";
+
+
+      progressFill.style.width =
+        "0%";
+
+
+      records.textContent =
+        "0 registros";
+
+
+      statusText.textContent =
+        "Sincronizando 4 fuentes";
+
+
+      await wait(
+        100
+      );
+
+
+      progressFill.style.transition =
+        "width .28s cubic-bezier(.2,.8,.25,1)";
+
+
+      animationRunning =
+        false;
+
+
+      await wait(
+        450
+      );
+
+
+      runSequence();
+
+    }
+
+
+    /* =====================================
+       INICIO
+    ===================================== */
+
+    buildConnections();
+
+    runSequence();
+
+
+    /* =====================================
+       RESPONSIVE
+    ===================================== */
+
+    let resizeTimeout;
+
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        clearTimeout(
+          resizeTimeout
+        );
+
+
+        resizeTimeout =
+          setTimeout(
+
+            () => {
+
+              buildConnections();
+
+            },
+
+            120
+
+          );
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

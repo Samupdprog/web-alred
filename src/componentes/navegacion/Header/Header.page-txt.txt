@@ -1,0 +1,105 @@
+ALRED — HEADER FINAL
+====================
+
+POR QUÉ ANTES NO VEÍAS CAMBIOS
+------------------------------
+El contenido de las tres tarjetas NO vive en Header.tsx.
+Se pasa mediante props desde:
+
+src/app/[locale]/layout.tsx
+
+Por eso cambiar únicamente Header.tsx / CSS no podía:
+- añadir Marketing digital,
+- eliminar Cómo trabajamos,
+- añadir Inicio,
+- arreglar las rutas de proyectos.
+
+Este paquete sustituye también el layout.
+
+
+ARCHIVOS A COPIAR
+-----------------
+1.
+src/componentes/navegacion/Header/Header.tsx
+
+2.
+src/componentes/navegacion/Header/Header.types.ts
+
+3.
+src/componentes/navegacion/Header/Header.module.css
+
+4.
+src/componentes/navegacion/Header/index.ts
+
+5.
+src/componentes/navegacion/index.ts
+
+6.
+src/config/routes.ts
+
+7.
+src/app/[locale]/layout.tsx
+
+
+NO TOCAR
+--------
+No hace falta modificar:
+src/app/layout.tsx
+src/app/globals.css
+src/app/robots.ts
+src/app/sitemap.ts
+
+
+RESULTADO
+---------
+LOGO
+→ Inicio
+
+SOLUCIONES
+→ clic general /soluciones
+→ Software a medida
+→ Automatizaciones
+→ Integraciones
+→ Herramientas internas
+→ Dashboards
+→ Marketing digital
+
+PROYECTOS
+→ clic general /proyectos
+→ La Baranda
+→ Index Clima
+→ Top Led Canarias
+→ Tu Fiesta Party
+
+ALRED
+→ clic general /nosotros
+→ Inicio
+→ Nosotros
+→ Contacto
+→ Instagram
+
+
+IPHONE
+------
+El Header anterior renderizaba:
+↗
+
+Ahora no existe ningún carácter Unicode para la flecha.
+Se dibuja enteramente mediante CSS.
+
+
+IDIOMA
+------
+Al cambiar ES/EN se conserva la ruta:
+
+/es/soluciones/marketing-digital
+→ /en/soluciones/marketing-digital
+
+
+VALIDACIÓN
+----------
+Después de copiar:
+
+npm run build
+
+Comprueba también en móvil real.

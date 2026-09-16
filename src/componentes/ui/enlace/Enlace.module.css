@@ -1,0 +1,62 @@
+.base {
+  min-height: 42px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--color-ink);
+  text-decoration: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.flecha {
+  padding-inline: 2px;
+}
+
+.flecha svg {
+  display: block;
+  width: 13px;
+  height: 13px;
+  stroke-width: 1.7;
+  transition: transform var(--motion-base) var(--motion-ease);
+}
+
+.subrayado::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--motion-base) var(--motion-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .flecha:hover svg {
+    transform: translateX(4px);
+  }
+
+  .subrayado:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.base:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flecha svg,
+  .subrayado::after {
+    transition-duration: .01ms;
+  }
+}

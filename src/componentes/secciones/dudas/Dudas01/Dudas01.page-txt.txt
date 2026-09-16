@@ -1,0 +1,137 @@
+DUDAS01 — GUÍA PARA page.tsx
+=============================
+
+QUÉ ES
+------
+Componente de preguntas y respuestas tipo acordeón.
+
+Diseñado mobile-first y adaptado a los patrones visuales de Alred.
+
+No utiliza:
+- eyebrow "Preguntas frecuentes";
+- badges;
+- iconos decorativos;
+- cambio de tipografía;
+- símbolos + y −.
+
+Utiliza una única flecha por pregunta.
+
+
+RUTA
+----
+src/componentes/secciones/dudas/Dudas01/
+
+
+USO
+---
+
+<Dudas01
+  titulo="Dudas habituales."
+
+  descripcion="Algunas respuestas rápidas antes de empezar. Si necesitas algo más concreto, puedes contárnoslo directamente."
+
+  preguntas={[
+    {
+      pregunta: "¿Qué tipo de proyectos desarrolláis?",
+      respuesta:
+        "Creamos software a medida, herramientas de gestión, automatizaciones, integraciones, dashboards y experiencias web conectadas a procesos reales de empresa.",
+    },
+    {
+      pregunta: "¿Cómo empieza un proyecto con Alred?",
+      respuesta:
+        "Primero entendemos cómo funciona tu negocio, qué quieres mejorar y qué herramientas utilizas. Después proponemos la solución más sencilla y adecuada para el problema.",
+    },
+    {
+      pregunta: "¿Cuánto tarda normalmente un proyecto?",
+      respuesta:
+        "Depende del alcance. Una web o herramienta sencilla puede resolverse en pocas semanas, mientras que un sistema a medida con varias integraciones requiere más tiempo. Antes de empezar dejamos definido el alcance.",
+    },
+    {
+      pregunta: "¿Puedo pedir presupuesto sin compromiso?",
+      respuesta:
+        "Sí. Puedes contarnos lo que necesitas y estudiaremos el proyecto antes de proponerte una solución y un presupuesto.",
+    },
+    {
+      pregunta: "¿Ofrecéis mantenimiento después del lanzamiento?",
+      respuesta:
+        "Sí. Podemos encargarnos del mantenimiento, mejoras, soporte y evolución de la solución después de ponerla en marcha.",
+    },
+  ]}
+/>
+
+
+AÑADIR PREGUNTAS
+----------------
+No tienes que modificar el componente.
+
+Solo añade otro objeto dentro del array:
+
+{
+  pregunta: "Nueva pregunta",
+  respuesta: "Nueva respuesta",
+}
+
+Puedes tener 5, 6, 10 o las que necesites.
+
+
+ABRIR OTRA PREGUNTA POR DEFECTO
+--------------------------------
+
+Primera:
+
+abiertaInicial={0}
+
+Segunda:
+
+abiertaInicial={1}
+
+Todas cerradas:
+
+abiertaInicial={null}
+
+
+COMPORTAMIENTO
+--------------
+- Solo hay una pregunta abierta cada vez.
+- Pulsar la abierta la cierra.
+- Pulsar otra abre la nueva.
+- Animación de altura suave sin calcular píxeles.
+- Funciona con touch real.
+- Funciona con teclado.
+- Respeta prefers-reduced-motion.
+- La flecha gira para indicar apertura.
+
+
+RESPONSIVE
+----------
+El CSS está escrito mobile-first.
+
+Móvil:
+- una columna;
+- objetivo táctil amplio;
+- pregunta y respuesta con padding compacto;
+- flecha única.
+
+Tablet/desktop:
+- encabezado a dos columnas;
+- marco más ancho;
+- mayor respiración interna.
+
+
+EXPORT
+------
+Crear/actualizar:
+
+src/componentes/secciones/dudas/index.ts
+
+con:
+
+export * from "./Dudas01";
+
+Y en:
+
+src/componentes/secciones/index.ts
+
+añadir:
+
+export * from "./dudas";

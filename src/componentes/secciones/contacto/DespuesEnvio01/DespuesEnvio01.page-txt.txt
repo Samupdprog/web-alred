@@ -1,0 +1,147 @@
+DESPUESENVIO01 — V3
+====================
+
+OBJETIVO
+--------
+Versión basada en la referencia de tres bloques visuales grandes.
+
+No incluye:
+- eyebrow "Primero / Después / Al final"
+- spans decorativos
+- línea junto al eyebrow
+- iconos
+- numeraciones
+
+
+ESTRUCTURA
+----------
+Cabecera editorial:
+- título izquierda
+- descripción derecha
+
+Debajo:
+- tres bloques con imagen de fondo individual
+- título y descripción sobre la imagen
+
+
+RUTA
+----
+src/componentes/secciones/contacto/DespuesEnvio01/
+
+
+USO
+---
+import {
+  DespuesEnvio01,
+} from "@/componentes/secciones/contacto";
+
+
+<DespuesEnvio01
+  titulo="Después de enviarlo."
+
+  descripcion="Revisamos lo que nos has contado antes de responderte. La idea es llegar a la primera conversación entendiendo ya qué necesitas y poder orientarte desde el principio."
+
+  pasos={[
+    {
+      titulo:
+        "Revisamos tu caso",
+
+      descripcion:
+        "Leemos lo que nos has contado y entendemos qué quieres resolver antes de responderte.",
+
+      fondoDesktop:
+        "/images/Decorativas/contacto-paso-1.jpg",
+
+      fondoMobile:
+        "/images/Decorativas/contacto-paso-1-mobile.jpg",
+
+      fondoAlt:
+        "",
+
+      fondoX:
+        50,
+
+      fondoY:
+        50,
+
+      fondoXMobile:
+        50,
+
+      fondoYMobile:
+        50,
+    },
+
+    {
+      titulo:
+        "Hablamos contigo",
+
+      descripcion:
+        "Si necesitamos algún detalle más, lo vemos directamente contigo y aclaramos únicamente lo necesario.",
+
+      fondoDesktop:
+        "/images/Decorativas/contacto-paso-2.jpg",
+
+      fondoMobile:
+        "/images/Decorativas/contacto-paso-2-mobile.jpg",
+
+      fondoAlt:
+        "",
+    },
+
+    {
+      titulo:
+        "Definimos el siguiente paso",
+
+      descripcion:
+        "Te proponemos la forma más sencilla de avanzar según el proyecto, sin complicarlo antes de tiempo.",
+
+      fondoDesktop:
+        "/images/Decorativas/contacto-paso-3.jpg",
+
+      fondoMobile:
+        "/images/Decorativas/contacto-paso-3-mobile.jpg",
+
+      fondoAlt:
+        "",
+    },
+  ]}
+/>
+
+
+IMÁGENES
+--------
+Cada paso admite su propia imagen:
+
+fondoDesktop
+fondoMobile
+
+Y ajuste individual:
+
+fondoX
+fondoY
+fondoXMobile
+fondoYMobile
+
+
+RESPONSIVE
+----------
+Móvil / tablet:
+- bloques apilados
+- imagen de fondo adaptada
+- padding reducido
+
+Desktop:
+- tres columnas
+- misma altura visual
+- hover sutil en dispositivos con ratón
+
+
+EXPORT
+------
+En:
+
+src/componentes/secciones/contacto/index.ts
+
+añade, si no existe:
+
+export * from "./DespuesEnvio01";

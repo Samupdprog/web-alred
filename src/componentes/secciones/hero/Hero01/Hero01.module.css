@@ -1,0 +1,852 @@
+.hero {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    var(--color-surface);
+}
+
+
+/* =========================================================
+   COPY
+   ========================================================= */
+
+.copy {
+  min-height:
+    560px;
+
+  padding:
+    clamp(96px, 10vw, 144px)
+    var(--space-section)
+    clamp(42px, 5vw, 64px);
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    flex-end;
+}
+
+
+/* =========================================================
+   TÍTULO
+   ========================================================= */
+
+.title {
+  width:
+    min(
+      100%,
+      980px
+    );
+
+  margin: 0;
+
+  color:
+    var(--color-ink);
+
+  font-size:
+    clamp(
+      3.35rem,
+      6.5vw,
+      6rem
+    );
+
+  line-height:
+    .94;
+
+  letter-spacing:
+    -.062em;
+
+  font-weight:
+    500;
+
+  text-wrap:
+    balance;
+}
+
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+
+.actions {
+  width:
+    min(
+      100%,
+      760px
+    );
+
+  margin-top:
+    clamp(
+      28px,
+      3vw,
+      42px
+    );
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    clamp(
+      24px,
+      4vw,
+      52px
+    );
+}
+
+
+.description {
+  width:
+    min(
+      100%,
+      360px
+    );
+
+  margin: 0;
+
+  color:
+    var(--color-muted);
+
+  font-size:
+    clamp(
+      .98rem,
+      1.25vw,
+      1.125rem
+    );
+
+  line-height:
+    1.42;
+
+  letter-spacing:
+    -.02em;
+}
+
+
+/* =========================================================
+   VISUAL STRIP
+   ========================================================= */
+
+.visualStrip {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 24fr)
+    minmax(0, 26fr)
+    minmax(0, 50fr);
+
+  min-height:
+    490px;
+
+  gap:
+    var(--space-page);
+
+  padding:
+    0
+    var(--space-tight)
+    var(--space-tight);
+}
+
+
+/* =========================================================
+   PANELES
+   ========================================================= */
+
+.panel {
+  position: relative;
+
+  min-width:
+    0;
+
+  min-height:
+    490px;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    var(--radius-md);
+
+  background:
+    var(--color-canvas);
+
+  isolation:
+    isolate;
+}
+
+
+/* =========================================================
+   IMAGEN NORMAL
+   ========================================================= */
+
+.image {
+  object-fit:
+    cover;
+
+  transition:
+    transform
+    900ms
+    var(--motion-ease),
+
+    opacity
+    var(--motion-fast)
+    var(--motion-ease);
+}
+
+
+/* =========================================================
+   EFECTO IMAGEN FIJA
+   ========================================================= */
+
+/*
+ * El panel sigue moviéndose con el documento.
+ *
+ * La imagen utiliza background-attachment: fixed,
+ * de modo que el panel funciona como una ventana
+ * que revela una imagen anclada al viewport.
+ */
+
+.fixedImage {
+  display:
+    none;
+}
+
+
+@media (min-width: 681px) {
+
+  .panelFixed
+  .image {
+    opacity:
+      0;
+  }
+
+
+  .panelFixed
+  .fixedImage {
+    position:
+      absolute;
+
+    inset:
+      0;
+
+    z-index:
+      0;
+
+    display:
+      block;
+
+    background-repeat:
+      no-repeat;
+
+    background-size:
+      cover;
+
+    background-attachment:
+      fixed;
+
+    /*
+     * backgroundPosition llega
+     * desde Hero01.tsx.
+     */
+  }
+
+}
+
+
+/* =========================================================
+   OVERLAYS
+   ========================================================= */
+
+.scrim,
+.scrimSoft,
+.scrimMain {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    1;
+
+  pointer-events:
+    none;
+}
+
+
+.scrim {
+  background:
+    linear-gradient(
+      180deg,
+
+      transparent
+      44%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .08
+      )
+      62%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .54
+      )
+      100%
+    );
+}
+
+
+.scrimSoft {
+  background:
+    linear-gradient(
+      180deg,
+
+      rgba(
+        0,
+        0,
+        0,
+        .02
+      ),
+
+      rgba(
+        0,
+        0,
+        0,
+        .14
+      )
+    );
+}
+
+
+.scrimMain {
+  background:
+    linear-gradient(
+      180deg,
+
+      transparent
+      36%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .08
+      )
+      58%,
+
+      rgba(
+        0,
+        0,
+        0,
+        .58
+      )
+      100%
+    );
+}
+
+
+/* =========================================================
+   CONTENIDO IMÁGENES
+   ========================================================= */
+
+.leftContent,
+.middleContent,
+.mainContent {
+  position:
+    absolute;
+
+  z-index:
+    2;
+}
+
+
+.leftContent {
+  left:
+    clamp(
+      20px,
+      2.4vw,
+      36px
+    );
+
+  right:
+    clamp(
+      20px,
+      2.4vw,
+      36px
+    );
+
+  bottom:
+    clamp(
+      22px,
+      2.5vw,
+      34px
+    );
+}
+
+
+.leftTitle {
+  max-width:
+    210px;
+
+  margin:
+    0
+    0
+    14px;
+
+  color:
+    white;
+
+  font-size:
+    clamp(
+      1rem,
+      1.35vw,
+      1.12rem
+    );
+
+  line-height:
+    1.28;
+
+  letter-spacing:
+    -.025em;
+}
+
+
+.lightLink {
+  color:
+    white;
+}
+
+
+.middleContent {
+  left:
+    clamp(
+      20px,
+      2.2vw,
+      30px
+    );
+
+  right:
+    clamp(
+      20px,
+      2.2vw,
+      30px
+    );
+
+  bottom:
+    clamp(
+      22px,
+      2.4vw,
+      32px
+    );
+}
+
+
+.middleContent p {
+  margin:
+    0;
+
+  color:
+    white;
+
+  font-size:
+    clamp(
+      1rem,
+      1.3vw,
+      1.1rem
+    );
+
+  line-height:
+    1.28;
+
+  letter-spacing:
+    -.025em;
+}
+
+
+.mainContent {
+  left:
+    clamp(
+      28px,
+      3.4vw,
+      50px
+    );
+
+  right:
+    clamp(
+      28px,
+      3.4vw,
+      56px
+    );
+
+  bottom:
+    clamp(
+      28px,
+      3.2vw,
+      44px
+    );
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(0, .9fr)
+    minmax(220px, 1fr);
+
+  align-items:
+    end;
+
+  gap:
+    clamp(
+      22px,
+      3vw,
+      42px
+    );
+
+  color:
+    white;
+}
+
+
+.mainTitle {
+  margin:
+    0;
+
+  font-size:
+    clamp(
+      2.8rem,
+      5vw,
+      5rem
+    );
+
+  line-height:
+    .9;
+
+  letter-spacing:
+    -.06em;
+
+  font-weight:
+    450;
+}
+
+
+.mainDescription {
+  width:
+    min(
+      100%,
+      320px
+    );
+
+  margin:
+    0;
+
+  font-size:
+    clamp(
+      1rem,
+      1.35vw,
+      1.15rem
+    );
+
+  line-height:
+    1.32;
+
+  letter-spacing:
+    -.025em;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .panel:not(.panelFixed):hover
+  .image {
+    transform:
+      scale(1.018);
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 980px) {
+
+  .copy {
+    min-height:
+      500px;
+  }
+
+
+  .title {
+    width:
+      min(
+        100%,
+        820px
+      );
+
+    font-size:
+      clamp(
+        3.2rem,
+        8vw,
+        5.15rem
+      );
+  }
+
+
+  .visualStrip {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+
+  .panelRight {
+    grid-column:
+      1 / -1;
+
+    min-height:
+      460px;
+  }
+
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 680px) {
+
+  .hero {
+    margin-top:
+      0;
+  }
+
+
+  .copy {
+    min-height:
+      auto;
+
+    padding:
+      96px
+      var(--space-section)
+      36px;
+  }
+
+
+  .title {
+    width:
+      100%;
+
+    max-width:
+      11ch;
+
+    font-size:
+      clamp(
+        2.75rem,
+        13vw,
+        4.15rem
+      );
+
+    line-height:
+      .95;
+
+    letter-spacing:
+      -.058em;
+
+    text-wrap:
+      pretty;
+  }
+
+
+  .actions {
+    margin-top:
+      26px;
+
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+
+    gap:
+      18px;
+  }
+
+
+  .description {
+    max-width:
+      32rem;
+
+    font-size:
+      1rem;
+  }
+
+
+  .visualStrip {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, .78fr);
+
+    grid-template-rows:
+      300px
+      390px;
+  }
+
+
+  .panel {
+    min-height:
+      0;
+  }
+
+
+  .panelLeft,
+  .panelMiddle {
+    min-height:
+      300px;
+  }
+
+
+  .panelRight {
+    grid-column:
+      1 / -1;
+
+    min-height:
+      390px;
+  }
+
+
+  /*
+   * iPhone / móvil:
+   *
+   * mantenemos las imágenes normales.
+   * background-attachment: fixed no es fiable
+   * en Safari móvil.
+   */
+
+  .fixedImage {
+    display:
+      none;
+  }
+
+
+  .panelFixed
+  .image {
+    opacity:
+      1;
+  }
+
+
+  .middleContent {
+    display:
+      none;
+  }
+
+
+  .mainContent {
+    left:
+      24px;
+
+    right:
+      24px;
+
+    bottom:
+      26px;
+
+    grid-template-columns:
+      1fr;
+
+    gap:
+      14px;
+  }
+
+
+  .mainTitle {
+    font-size:
+      clamp(
+        2.65rem,
+        14vw,
+        4rem
+      );
+  }
+
+
+  .mainDescription {
+    max-width:
+      290px;
+
+    font-size:
+      .98rem;
+  }
+
+}
+
+
+/* =========================================================
+   MÓVIL PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .visualStrip {
+    grid-template-columns:
+      1fr;
+
+    grid-template-rows:
+      255px
+      220px
+      360px;
+  }
+
+
+  .panelLeft,
+  .panelMiddle,
+  .panelRight {
+    grid-column:
+      1;
+
+    min-height:
+      0;
+  }
+
+
+  .middleContent {
+    display:
+      block;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .image {
+    transition:
+      none;
+  }
+
+}

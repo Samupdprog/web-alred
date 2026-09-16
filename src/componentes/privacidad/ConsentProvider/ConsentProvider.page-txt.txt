@@ -1,0 +1,14 @@
+ALRED - CONSENTIMIENTO DE ANALITICA
+====================================
+
+ConsentProvider centraliza el consentimiento de la categoria analytics.
+
+- Persistencia: localStorage first-party `alred-consent`.
+- Version actual: 2026-09-15.
+- Proveedores: Google Analytics 4 y Microsoft Clarity.
+- Ningun script se inserta antes de aceptar analitica.
+- El Footer abre preferencias mediante `data-open-cookie-settings`.
+- Clarity mantiene `ad_Storage: denied` y no identifica leads.
+- El formulario conserva `data-clarity-mask="true"`.
+
+El contenido visible del panel recibe el locale desde `src/app/[locale]/layout.tsx`.

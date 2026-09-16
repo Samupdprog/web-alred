@@ -1,0 +1,221 @@
+SELECTORSOLUCIONES01 — GUÍA
+============================
+
+OBJETIVO
+--------
+Selector visual de soluciones reutilizable en:
+
+/[locale]/soluciones
+
+y:
+
+/[locale]/soluciones/[slug]
+
+
+RUTA DEL COMPONENTE
+-------------------
+src/componentes/secciones/soluciones/SelectorSoluciones01/
+
+
+ARCHIVOS VISUALES INCLUIDOS
+---------------------------
+public/images/Soluciones/selector/
+
+software-a-medida.png
+automatizaciones.png
+integraciones.png
+dashboards.png
+
+
+USO EN /SOLUCIONES
+------------------
+<SelectorSoluciones01
+  soluciones={[
+    {
+      slug:
+        "software-a-medida",
+
+      titulo:
+        "Software a medida",
+
+      descripcion:
+        "Aplicaciones diseñadas desde cero para adaptarse por completo a tus procesos y objetivos.",
+
+      href:
+        `/${locale}/soluciones/software-a-medida`,
+
+      imagen:
+        "/images/Soluciones/selector/software-a-medida.png",
+    },
+
+    {
+      slug:
+        "automatizaciones",
+
+      titulo:
+        "Automatizaciones",
+
+      descripcion:
+        "Elimina tareas repetitivas, conecta procesos y haz que tu negocio funcione solo.",
+
+      href:
+        `/${locale}/soluciones/automatizaciones`,
+
+      imagen:
+        "/images/Soluciones/selector/automatizaciones.png",
+    },
+
+    {
+      slug:
+        "integraciones",
+
+      titulo:
+        "Integraciones",
+
+      descripcion:
+        "Conectamos tus herramientas favoritas para que toda la información fluya sin fricciones.",
+
+      href:
+        `/${locale}/soluciones/integraciones`,
+
+      imagen:
+        "/images/Soluciones/selector/integraciones.png",
+    },
+
+    {
+      slug:
+        "dashboards",
+
+      titulo:
+        "Dashboards",
+
+      descripcion:
+        "Convierte tus datos en información útil y toma mejores decisiones en tiempo real.",
+
+      href:
+        `/${locale}/soluciones/dashboards`,
+
+      imagen:
+        "/images/Soluciones/selector/dashboards.png",
+    },
+  ]}
+/>
+
+
+USO EN UNA PÁGINA [slug]
+------------------------
+Por ejemplo, en automatizaciones:
+
+<SelectorSoluciones01
+  activa="automatizaciones"
+
+  soluciones={...}
+/>
+
+El componente mueve automáticamente la solución activa a la primera posición
+y le aplica un borde ligeramente distinto.
+
+No muestra badges ni texto "Activo".
+
+
+ARQUITECTURA
+------------
+El componente NO conoce las rutas de la aplicación.
+
+Cada item recibe:
+
+href
+
+Esto permite reutilizar el mismo componente con cualquier locale o estructura
+de navegación.
+
+
+PROPS
+-----
+SelectorSoluciones01Props:
+
+id?: string
+
+titulo?: string
+
+descripcion?: string
+
+soluciones: SolucionSelectorItem[]
+
+activa?: string
+
+
+SolucionSelectorItem:
+
+slug: string
+titulo: string
+descripcion: string
+href: string
+
+imagen: string
+imagenAlt?: string
+
+imagenX?: number
+imagenY?: number
+
+imagenXMobile?: number
+imagenYMobile?: number
+
+
+IMÁGENES
+--------
+Las imágenes son abstractas/decorativas.
+
+Por eso pueden dejar:
+
+imagenAlt: ""
+
+para evitar ruido en lectores de pantalla.
+
+
+RESPONSIVE
+----------
+Móvil:
+- 1 columna
+
+Tablet:
+- 2 columnas
+
+Desktop:
+- se usan tantas columnas como soluciones haya, hasta un máximo de 5
+
+Esto permite usar ahora 4 soluciones y añadir posteriormente
+"Herramientas internas" sin rehacer el componente.
+
+
+INTERACCIÓN
+-----------
+Toda la tarjeta es un enlace.
+
+No se anidan links dentro de la tarjeta.
+
+En desktop:
+- elevación muy ligera
+- zoom de imagen sutil
+- desplazamiento de flecha
+
+En touch no se aplican efectos hover.
+
+
+SEO / SEMÁNTICA
+---------------
+- sección con h2
+- cada solución usa h3
+- enlaces rastreables hacia cada /soluciones/[slug]
+- aria-current="page" en la solución activa
+
+
+EXPORT GENERAL
+--------------
+En:
+
+src/componentes/secciones/soluciones/index.ts
+
+añade:
+
+export * from "./SelectorSoluciones01";

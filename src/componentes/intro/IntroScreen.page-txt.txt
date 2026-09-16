@@ -1,0 +1,10 @@
+ALRED - INTRO SCREEN
+====================
+
+IntroScreen se monta una vez en src/app/layout.tsx para cubrir todas las rutas publicas.
+
+- Usa el logo SVG real de Alred desde public/svg/Logos/logo-alred.svg.
+- Muestra la secuencia de entrada y salida durante 3.7 segundos.
+- Bloquea el scroll mediante body.intro-active mientras esta visible.
+- Respeta prefers-reduced-motion y no renderiza la capa animada en ese caso.
+- No contiene interaccion ni afecta a la navegacion o al consentimiento.

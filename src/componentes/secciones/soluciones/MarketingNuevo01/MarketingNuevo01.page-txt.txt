@@ -1,0 +1,80 @@
+MARKETINGNUEVO01 — CORREGIDO
+================================
+
+CAMBIOS PRINCIPALES
+-------------------
+1. El componente YA NO ocupa todo el ancho de la web.
+
+Antes:
+.shell {
+  width: 100%;
+}
+
+Ahora:
+.shell {
+  width: min(calc(100% - 40px), 1440px);
+  margin-inline: auto;
+}
+
+Móvil:
+width: calc(100% - 20px);
+
+
+2. Se mantiene la UI global de Alred:
+- Boton variante="principal"
+- Enlace variante="flecha"
+
+
+3. Eliminados:
+- "Nuevo servicio"
+- badges / eyebrow
+- Estrategia / Campañas / Resultados reales
+- copy de marketing offline
+
+
+4. Contenido centrado solo en MARKETING DIGITAL:
+- códigos promocionales
+- QR y enlaces por campaña
+- visitas
+- conversiones
+- clientes recurrentes
+- reservas
+- ventas
+- mapas de calor
+- funnels
+- SEO
+- visibilidad en asistentes de IA
+- dashboards
+- ROAS
+
+
+5. Gráfica corregida:
+- un único SVG responsivo
+- meses distribuidos con grid
+- título y porcentaje separados
+- sin flecha pegada al porcentaje
+- curva no se deforma al cambiar de ancho
+
+
+FONDO
+-----
+public/images/Decorativas/background-marketing-digital.png
+
+
+RUTA
+----
+src/componentes/secciones/soluciones/MarketingNuevo01/
+
+
+USO
+---
+<MarketingNuevo01
+  cta={{
+    texto: "Descubrir marketing digital",
+    href: `/${locale}/soluciones/marketing-digital`,
+  }}
+  ctaSecundario={{
+    texto: "Ver cómo lo medimos",
+    href: `/${locale}/soluciones/marketing-digital#medicion`,
+  }}
+/>

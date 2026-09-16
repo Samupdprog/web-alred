@@ -1,0 +1,81 @@
+SOLUCIONENFOQUE01 — SIN DASHBOARD EN CÓDIGO
+============================================
+
+IMPORTANTE
+----------
+Esta versión NO renderiza ningún dashboard con HTML, React ni JavaScript.
+
+El visual del dashboard debe formar parte de la propia imagen de fondo.
+
+Por tanto, elimina de esta carpeta:
+
+SolucionDashboardVisual.tsx
+
+
+También elimina cualquier import/export relacionado con:
+
+SolucionDashboardVisual
+DashboardSolucion
+MetricaDashboard
+ActividadDashboard
+
+
+RUTA
+----
+src/componentes/secciones/soluciones/SolucionEnfoque01/
+
+
+ARCHIVOS QUE DEBEN QUEDAR
+-------------------------
+SolucionEnfoque01.tsx
+SolucionEnfoque01.module.css
+SolucionEnfoque01.types.ts
+SolucionEnfoque01.page-txt.txt
+index.ts
+
+
+IMAGEN
+------
+Ejemplo:
+
+/images/Decorativas/Ondas de vidrio translúcido sobre blanco(1).png
+
+Si esa imagen ya contiene el dashboard, no hace falta ningún otro visual.
+
+
+USO
+---
+<SolucionEnfoque01
+  titulo="No partimos de una herramienta cerrada."
+  tituloSecundario="Partimos de cómo trabaja tu empresa."
+  descripcion="Analizamos tus procesos, entendemos tus necesidades y diseñamos la solución más sencilla y efectiva. La tecnología se decide después de entender el problema."
+  cta={{
+    texto:
+      "Conoce nuestro proceso",
+    href:
+      `/${locale}/nosotros`,
+  }}
+  fondoDesktop="/images/Decorativas/Ondas de vidrio translúcido sobre blanco(1).png"
+  fondoMobile="/images/Decorativas/Ondas de vidrio translúcido sobre blanco(1).png"
+/>
+
+
+RESPONSIVE
+----------
+Desktop:
+- texto a la izquierda
+- imagen completa de fondo
+- dashboard integrado en la imagen
+
+Móvil:
+- texto arriba
+- recorte de la misma imagen mediante object-position
+
+Para un resultado móvil perfecto se recomienda crear una imagen vertical específica.
+
+
+EXPORT GENERAL
+--------------
+src/componentes/secciones/soluciones/index.ts
+
+export * from "./SolucionEnfoque01";

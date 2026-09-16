@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatización de procesos</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#1c1c1c;--panel:#101010;--line:rgba(255,255,255,.09);--text:#f5f5f5;--muted:rgba(255,255,255,.43);--green:#50c989}
+    body{min-height:100vh;display:grid;place-items:center;padding:24px;background:#0e0e0e;color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    .visual{position:relative;width:min(680px,100%);height:380px;overflow:hidden;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.028),transparent 48%),var(--bg);perspective:1000px;isolation:isolate}
+    .dots{position:absolute;inset:0;opacity:.18;background-image:radial-gradient(circle,rgba(255,255,255,.15) .75px,transparent 1px);background-size:18px 18px;mask-image:radial-gradient(ellipse at center,#000,rgba(0,0,0,.76) 50%,transparent 87%);pointer-events:none}
+    .stage{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+    .badge{position:absolute;z-index:20;height:34px;padding:0 13px;border-radius:999px;border:1px solid rgba(255,255,255,.075);background:rgba(10,10,10,.96);display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.74);box-shadow:0 8px 22px rgba(0,0,0,.15);pointer-events:none}
+    .badge.top{top:31px;left:50%;transform:translateX(-50%) translateZ(70px);animation:floatA 8s ease-in-out infinite}.badge.bottom{bottom:23px;left:50%;transform:translateX(-50%) translateZ(72px);background:#f5f5f5;color:#252525;animation:floatB 8.7s ease-in-out infinite}.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px rgba(80,201,137,.13),0 0 9px rgba(80,201,137,.35)}
+    @keyframes floatA{0%,100%{transform:translateX(-50%) translateY(0) translateZ(70px)}50%{transform:translateX(-50%) translateY(-2px) translateZ(70px)}}@keyframes floatB{0%,100%{transform:translateX(-50%) translateY(0) translateZ(72px)}50%{transform:translateX(-50%) translateY(2px) translateZ(72px)}}
+    .flow-wrap{position:absolute;left:50%;top:51%;width:560px;height:205px;transform:translate(-50%,-50%) translateZ(24px)}
+    .flow-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}.track{fill:none;stroke:rgba(255,255,255,.09);stroke-width:1.4;stroke-linecap:round}.track.secondary{stroke:rgba(255,255,255,.035);stroke-dasharray:3 6}.signal{fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;filter:drop-shadow(0 0 3px rgba(255,255,255,.48));opacity:0}
+    .step{position:absolute;z-index:4;width:112px;height:88px;border-radius:13px;border:1px solid rgba(255,255,255,.085);background:linear-gradient(145deg,#131313,#0f0f0f);box-shadow:0 16px 32px rgba(0,0,0,.19),inset 0 1px 0 rgba(255,255,255,.02);padding:12px;transition:border-color .25s ease,background .25s ease,transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;transform:translateZ(15px)}
+    .step[data-step="0"]{left:0;top:58px}.step[data-step="1"]{left:149px;top:58px}.step[data-step="2"]{left:298px;top:58px}.step[data-step="3"]{left:447px;top:58px}
+    .step.active{border-color:rgba(255,255,255,.22);background:linear-gradient(145deg,#171717,#111);transform:translateZ(22px) translateY(-2px);box-shadow:0 0 0 1px rgba(255,255,255,.04),0 0 18px rgba(255,255,255,.06),0 16px 32px rgba(0,0,0,.19)}.step.done .step-icon{background:rgba(80,201,137,.12);border-color:rgba(80,201,137,.28)}.step.done .check{opacity:1;transform:scale(1)}
+    .step-top{display:flex;align-items:center;justify-content:space-between}.step-icon{width:25px;height:25px;border-radius:8px;border:1px solid rgba(255,255,255,.075);display:grid;place-items:center;background:rgba(255,255,255,.025)}.step-icon svg{width:13px;height:13px;fill:none;stroke:rgba(255,255,255,.6);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.check{width:14px;height:14px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#0d1712;font-size:9px;font-weight:700;opacity:0;transform:scale(.6);transition:opacity .25s ease,transform .35s cubic-bezier(.16,1,.3,1)}
+    .step-title{font-size:11px;color:rgba(255,255,255,.72);margin-top:10px}.step-meta{font-size:9px;color:rgba(255,255,255,.31);margin-top:5px}.step-bar{height:4px;width:72%;border-radius:999px;background:rgba(255,255,255,.08);margin-top:8px}.step.active .step-bar{background:rgba(255,255,255,.08)}.step.active::after{content:"";position:absolute;inset:-1px;border-radius:inherit;border:1px solid rgba(255,255,255,.16);opacity:0;animation:stepPulse .7s ease-out}.step.done::after{display:none}@keyframes stepPulse{0%{opacity:.55;transform:scale(.985)}100%{opacity:0;transform:scale(1.035)}}
+    .spark{position:absolute;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.65);opacity:0;pointer-events:none;z-index:2;transform:translate(-50%,-50%)}
+    @media(max-width:620px){.visual{height:370px}.flow-wrap{width:500px;transform:translate(-50%,-50%) translateZ(24px) scale(.88)}.badge{font-size:11px}}
+    @media(max-width:480px){.flow-wrap{transform:translate(-50%,-50%) translateZ(24px) scale(.73)}}
+    @media(prefers-reduced-motion:reduce){.badge{animation:none!important}}
+  
+
+    /* Responsive mobile: composición vertical real, sin escalar el lienzo de escritorio */
+    @media(max-width:520px){
+      body{padding:10px}
+      .visual{height:430px;width:100%;min-width:0}
+      .badge{height:32px;padding:0 11px;font-size:10.5px;max-width:calc(100% - 24px);white-space:nowrap}
+      .badge.top{top:18px}
+      .badge.bottom{bottom:17px}
+      .flow-wrap{top:50%;width:280px;height:286px;transform:translate(-50%,-50%) translateZ(24px)}
+      .step{width:220px;height:58px;padding:8px 10px;border-radius:12px}
+      .step[data-step="0"]{left:30px;top:0}
+      .step[data-step="1"]{left:30px;top:76px}
+      .step[data-step="2"]{left:30px;top:152px}
+      .step[data-step="3"]{left:30px;top:228px}
+      .step-top{position:static}
+      .step-icon{position:absolute;left:10px;top:50%;width:24px;height:24px;transform:translateY(-50%)}
+      .check{position:absolute;right:10px;top:10px}
+      .step-title{margin:5px 24px 0 34px;font-size:10.5px}
+      .step-meta{margin:4px 20px 0 34px;font-size:8.5px}
+      .step-bar{width:48%;margin:6px 0 0 34px;height:3px}
+    }
+    @media(max-width:340px){
+      body{padding:6px}
+      .flow-wrap{width:264px}
+      .step{width:208px}
+      .step[data-step="0"],.step[data-step="1"],.step[data-step="2"],.step[data-step="3"]{left:28px}
+      .badge{font-size:10px}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="visual" id="visual"><div class="dots"></div><div class="stage" id="stage">
+    <div class="badge top"><span class="pulse-dot"></span><span>Flujo automático activo</span></div>
+    <div class="flow-wrap" id="flowWrap">
+      <svg class="flow-svg" viewBox="0 0 560 205" aria-hidden="true">
+        <path class="track secondary" d="M56 102 H503"/>
+        <path class="track" id="mainPath" d="M56 102 H503"/>
+        <path class="signal" id="signalPath" d="M56 102 H503"/>
+      </svg>
+      <div class="spark" id="spark"></div>
+      <div class="step" data-step="0"><div class="step-top"><span class="step-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h6"/></svg></span><span class="check">✓</span></div><div class="step-title">Solicitud</div><div class="step-meta">Entrada recibida</div><div class="step-bar"></div></div>
+      <div class="step" data-step="1"><div class="step-top"><span class="step-icon"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span><span class="check">✓</span></div><div class="step-title">Validación</div><div class="step-meta">Reglas verificadas</div><div class="step-bar"></div></div>
+      <div class="step" data-step="2"><div class="step-top"><span class="step-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg></span><span class="check">✓</span></div><div class="step-title">Asignación</div><div class="step-meta">Tarea creada</div><div class="step-bar"></div></div>
+      <div class="step" data-step="3"><div class="step-top"><span class="step-icon"><svg viewBox="0 0 24 24"><path d="M5 7h14v10H5zM7 9l5 4 5-4"/></svg></span><span class="check">✓</span></div><div class="step-title">Notificación</div><div class="step-meta">Envío completado</div><div class="step-bar"></div></div>
+    </div>
+    <div class="badge bottom"><span>4 pasos · sin intervención manual</span></div>
+  </div></div>
+  <script>
+    const root=document.getElementById('visual'),stage=document.getElementById('stage'),wrap=document.getElementById('flowWrap'),path=document.getElementById('mainPath'),signal=document.getElementById('signalPath'),spark=document.getElementById('spark'),steps=[...root.querySelectorAll('.step')];
+    const secondary=root.querySelector('.track.secondary'),flowSvg=root.querySelector('.flow-svg');
+    function syncFlowGeometry(){const mobile=matchMedia('(max-width:520px)').matches;const d=mobile?'M140 29 V257':'M56 102 H503';[path,signal,secondary].forEach(el=>el.setAttribute('d',d));flowSvg.setAttribute('viewBox',mobile?'0 0 280 286':'0 0 560 205')}
+    syncFlowGeometry();window.addEventListener('resize',syncFlowGeometry);
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let rx=0,ry=0,trx=0,tryy=0,running=false;
+    function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+    function reset(){steps.forEach(s=>s.classList.remove('active','done'));signal.style.opacity='0';spark.style.opacity='0'}
+    function mark(i){steps.forEach((s,j)=>s.classList.toggle('active',j===i));if(i>0)steps[i-1].classList.add('done')}
+    async function run(){if(running)return;running=true;reset();await wait(450);const len=path.getTotalLength();const start=performance.now(),duration=2300;signal.style.strokeDasharray=`18 ${len+80}`;signal.style.opacity='1';spark.style.opacity='1';let last=-1;
+      await new Promise(resolve=>{function tick(now){const p=Math.min((now-start)/duration,1);const eased=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;const dist=eased*len;signal.style.strokeDashoffset=`${18-dist}`;const pt=path.getPointAtLength(dist);spark.style.left=`${pt.x}px`;spark.style.top=`${pt.y}px`;const idx=p<.25?0:p<.5?1:p<.75?2:3;if(idx!==last){last=idx;mark(idx)}if(p<1)requestAnimationFrame(tick);else resolve()}requestAnimationFrame(tick)});
+      steps[3].classList.add('done');steps.forEach(s=>s.classList.remove('active'));spark.style.opacity='0';signal.style.opacity='0';await wait(1500);running=false;run()}
+    root.addEventListener('pointermove',e=>{if(reduced)return;const r=root.getBoundingClientRect();const x=((e.clientX-r.left)/r.width-.5)*2,y=((e.clientY-r.top)/r.height-.5)*2;tryy=x*3;trx=-y*2.4});root.addEventListener('pointerleave',()=>{trx=0;tryy=0});
+    function frame(){rx+=(trx-rx)*.055;ry+=(tryy-ry)*.055;stage.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;requestAnimationFrame(frame)}frame();run();
+  </script>
+</body>
+</html>
