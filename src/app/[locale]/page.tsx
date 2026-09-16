@@ -263,7 +263,7 @@ export default async function HomePage({
       },
       {
         nombre: "WhatsApp",
-        archivo: "whatsapp.svg",
+        archivo: "WhatsApp.svg",
       },
       {
         nombre: "PDF",

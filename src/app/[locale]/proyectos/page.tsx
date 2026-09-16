@@ -6,7 +6,7 @@ import {
 } from "@/componentes/secciones";
 
 import {
-  proyectos,
+  obtenerProyectosLocalizados,
 } from "@/datos/proyectos";
 
 
@@ -24,6 +24,14 @@ export default async function ProyectosPage({
     locale,
   } = await params;
 
+  const esEspanol =
+    locale !== "en";
+
+  const proyectos =
+    obtenerProyectosLocalizados(
+      locale,
+    );
+
 
   return (
     <main
@@ -34,13 +42,23 @@ export default async function ProyectosPage({
          =================================================== */}
 
       <Hero02
-        titulo="Proyectos creados alrededor de problemas reales."
+        titulo={
+          esEspanol
+            ? "Proyectos creados alrededor de problemas reales."
+            : "Projects built around real problems."
+        }
 
-        descripcion="Cada empresa trabaja de una manera distinta. Por eso cada solución también lo es."
+        descripcion={
+          esEspanol
+            ? "Cada empresa trabaja de una manera distinta. Por eso cada solución también lo es."
+            : "Every business works differently. That's why every solution is different too."
+        }
 
         cta={{
           texto:
-            "Hablemos de tu proyecto",
+            esEspanol
+              ? "Hablemos de tu proyecto"
+              : "Let's talk about your project",
 
           href:
             `/${locale}/contacto`,
@@ -78,6 +96,10 @@ export default async function ProyectosPage({
         }
 
         baseHref={`/${locale}/proyectos`}
+
+        locale={
+          locale
+        }
       />
 
 
@@ -86,15 +108,27 @@ export default async function ProyectosPage({
          =================================================== */}
 
       <ListadoProyectos01
-        titulo="Todos los proyectos"
+        titulo={
+          esEspanol
+            ? "Todos los proyectos"
+            : "All projects"
+        }
 
-        descripcion="Soluciones distintas, diseñadas alrededor de procesos y necesidades reales."
+        descripcion={
+          esEspanol
+            ? "Soluciones distintas, diseñadas alrededor de procesos y necesidades reales."
+            : "Different solutions, designed around real processes and needs."
+        }
 
         proyectos={
           proyectos
         }
 
         baseHref={`/${locale}/proyectos`}
+
+        locale={
+          locale
+        }
       />
 
 
@@ -103,13 +137,23 @@ export default async function ProyectosPage({
          =================================================== */}
 
       <CTAFinal01
-        titulo="Cuéntanos lo que necesitas."
+        titulo={
+          esEspanol
+            ? "Cuéntanos lo que necesitas."
+            : "Tell us what you need."
+        }
 
-        descripcion="Te ayudamos a definir la solución y puedes pedir tu presupuesto gratis, sin compromiso."
+        descripcion={
+          esEspanol
+            ? "Te ayudamos a definir la solución y puedes pedir tu presupuesto gratis, sin compromiso."
+            : "We'll help you define the solution and you can request your free, no-obligation quote."
+        }
 
         cta={{
           texto:
-            "Pedir presupuesto gratis",
+            esEspanol
+              ? "Pedir presupuesto gratis"
+              : "Request a free quote",
 
           href:
             `/${locale}/contacto`,
@@ -117,7 +161,9 @@ export default async function ProyectosPage({
 
         ctaSecundario={{
           texto:
-            "Ver soluciones",
+            esEspanol
+              ? "Ver soluciones"
+              : "View solutions",
 
           href:
             `/${locale}/soluciones`,
@@ -127,7 +173,11 @@ export default async function ProyectosPage({
 
         fondoMobile="/images/Decorativas/difference-alred-visual (7).png"
 
-        fondoAlt="Textura abstracta de Alred"
+        fondoAlt={
+          esEspanol
+            ? "Textura abstracta de Alred"
+            : "Abstract Alred texture"
+        }
 
         oscurecerFondo={
           0.04
